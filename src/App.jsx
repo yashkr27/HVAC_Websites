@@ -1,9 +1,16 @@
 import { ArrowRight } from "lucide-react";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import logoWebp from "./assets/logo.webp";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Gallery from "./pages/Gallery.jsx";
 import Reviews from "./pages/Reviews.jsx";
 import ServiceAreas from "./pages/ServiceAreas.jsx";
 import Services from "./pages/Services.jsx";
+import SignIn from "./pages/SignIn.jsx";
+import SignUp from "./pages/SignUp.jsx";
+import { Footer, Navbar } from "./components/SiteChrome.jsx";
 
 const hvacImages = {
   hero:
@@ -17,122 +24,6 @@ const hvacImages = {
   service:
     "https://images.pexels.com/photos/34938442/pexels-photo-34938442.jpeg?auto=compress&cs=tinysrgb&w=1400",
 };
-
-// ─── Logo Icon ────────────────────────────────────────────────────────────────
-function LogoIcon({ className = "", style }) {
-  return (
-    <svg
-      className={className}
-      style={style}
-      viewBox="0 0 256 256"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M 128.005 191.173 C 128.448 156.208 156.93 128 192 128 L 192 64 L 128 64 C 128 99.346 99.346 128 64 128 L 64 192 L 128 192 Z M 192 256 L 64 256 C 28.654 256 0 227.346 0 192 L 0 64 L 64 64 L 64 0 L 192 0 C 227.346 0 256 28.654 256 64 L 256 192 L 192 192 Z" />
-    </svg>
-  );
-}
-
-// ─── Navbar ───────────────────────────────────────────────────────────────────
-function Navbar() {
-  return (
-    <nav
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 20,
-        padding: "20px 24px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: "88rem",
-          margin: "0 auto",
-        }}
-      >
-        {/* Left: Logo + Name */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <LogoIcon
-            style={{ width: "28px", height: "28px", color: "#000" }}
-            className="w-7 h-7"
-          />
-          <span
-            style={{
-              fontSize: "18px",
-              fontWeight: 600,
-              letterSpacing: "-0.02em",
-              color: "#000",
-              fontFamily: "'TT Norms Pro', sans-serif",
-            }}
-          >
-            AAA Heating &amp; Air
-          </span>
-        </div>
-
-        {/* Center: Nav Links */}
-        <div
-          style={{
-            display: "flex",
-            gap: "32px",
-            alignItems: "center",
-          }}
-          className="hidden md:flex"
-        >
-          {[
-            ["Services", "/services"],
-            ["About", "/about"],
-            ["Service Areas", "/service-areas"],
-            ["Reviews", "/reviews"],
-            ["Contact", "/contact"],
-          ].map(([link, href]) => (
-              <a
-                key={link}
-                href={href}
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#555",
-                  textDecoration: "none",
-                  transition: "color 0.2s",
-                  fontFamily: "'TT Norms Pro', sans-serif",
-                }}
-                onMouseEnter={(e) => (e.target.style.color = "#000")}
-                onMouseLeave={(e) => (e.target.style.color = "#555")}
-              >
-                {link}
-              </a>
-            ))}
-        </div>
-
-        {/* Right: CTA Button */}
-        <button
-          style={{
-            background: "#000",
-            color: "#fff",
-            fontSize: "15px",
-            fontWeight: 500,
-            padding: "10px 28px",
-            borderRadius: "9999px",
-            border: "none",
-            cursor: "pointer",
-            transition: "background 0.2s",
-            fontFamily: "'TT Norms Pro', sans-serif",
-            whiteSpace: "nowrap",
-          }}
-          onMouseEnter={(e) => (e.target.style.background = "#333")}
-          onMouseLeave={(e) => (e.target.style.background = "#000")}
-        >
-          Get Free Estimate
-        </button>
-      </div>
-    </nav>
-  );
-}
 
 // ─── Brand Marquee ────────────────────────────────────────────────────────────
 const heroBrands = [
@@ -188,7 +79,7 @@ function HeroMarquee() {
   );
 }
 
-// ─── Hero Section ─────────────────────────────────────────────────────────────
+// ─── Hero Section — truly full-screen ────────────────────────────────────────
 function HeroSection() {
   return (
     <div
@@ -203,9 +94,9 @@ function HeroSection() {
         style={{
           position: "relative",
           width: "100%",
-          borderRadius: "16px",
+          borderRadius: "20px",
           overflow: "hidden",
-          height: "calc(100vh - 96px)",
+          height: "calc(100vh - 24px)",
         }}
       >
         <img
@@ -238,18 +129,18 @@ function HeroSection() {
             alignItems: "flex-start",
             justifyContent: "flex-start",
             height: "100%",
-            padding: "48px",
-            paddingTop: "144px",
+            padding: "48px 56px",
+            paddingTop: "140px",
           }}
         >
           <h1
             style={{
               color: "#000",
-              fontSize: "clamp(44px, 5vw, 60px)",
+              fontSize: "clamp(48px, 5.5vw, 72px)",
               fontWeight: 500,
-              lineHeight: 1.1,
-              maxWidth: "36rem",
-              marginBottom: "16px",
+              lineHeight: 1.05,
+              maxWidth: "40rem",
+              marginBottom: "20px",
               letterSpacing: "-0.04em",
               fontFamily: "'TT Norms Pro', sans-serif",
             }}
@@ -262,10 +153,10 @@ function HeroSection() {
           <p
             style={{
               color: "rgba(0,0,0,0.7)",
-              fontSize: "clamp(15px, 1.5vw, 18px)",
-              maxWidth: "32rem",
-              marginBottom: "32px",
-              lineHeight: 1.6,
+              fontSize: "clamp(15px, 1.5vw, 19px)",
+              maxWidth: "34rem",
+              marginBottom: "36px",
+              lineHeight: 1.65,
               fontFamily: "'Inter', ui-sans-serif, system-ui, sans-serif",
             }}
           >
@@ -274,7 +165,8 @@ function HeroSection() {
           </p>
 
           {/* CTA Button */}
-          <button
+          <Link
+            to="/contact"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -292,6 +184,7 @@ function HeroSection() {
               cursor: "pointer",
               transition: "background 0.2s",
               fontFamily: "'TT Norms Pro', sans-serif",
+              textDecoration: "none",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "#333")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#000")}
@@ -309,7 +202,7 @@ function HeroSection() {
             >
               <ArrowRight size={20} color="#000" />
             </span>
-          </button>
+          </Link>
 
           <HeroMarquee />
         </div>
@@ -353,7 +246,8 @@ function InfoSection() {
             >
               Meet AAA Heating &amp; Air Conditioning.
             </h2>
-            <button
+            <Link
+              to="/about"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -371,6 +265,7 @@ function InfoSection() {
                 cursor: "pointer",
                 transition: "background 0.2s",
                 fontFamily: "'TT Norms Pro', sans-serif",
+                textDecoration: "none",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.background = "#333")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "#000")}
@@ -388,7 +283,7 @@ function InfoSection() {
               >
                 <ArrowRight size={16} color="#000" />
               </span>
-            </button>
+            </Link>
           </div>
 
           {/* Right */}
@@ -417,22 +312,14 @@ function InfoSection() {
         >
           <style>{`
             @media (max-width: 1024px) {
-              .info-cards-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-              }
+              .info-cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
             }
             @media (max-width: 640px) {
-              .info-cards-grid {
-                grid-template-columns: 1fr !important;
-              }
+              .info-cards-grid { grid-template-columns: 1fr !important; }
             }
-            .card-1-lg {
-              grid-column: span 2;
-            }
+            .card-1-lg { grid-column: span 2; }
             @media (max-width: 1024px) {
-              .card-1-lg {
-                grid-column: span 1 !important;
-              }
+              .card-1-lg { grid-column: span 1 !important; }
             }
           `}</style>
 
@@ -602,9 +489,7 @@ function BackedBySection() {
       >
         <style>{`
           @media (max-width: 768px) {
-            .backed-grid {
-              grid-template-columns: 1fr !important;
-            }
+            .backed-grid { grid-template-columns: 1fr !important; }
           }
         `}</style>
 
@@ -765,9 +650,8 @@ function UseCasesSection() {
               round.
             </p>
 
-            {/* Know more → View Services */}
-            <a
-              href="#"
+            <Link
+              to="/services"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -801,7 +685,7 @@ function UseCasesSection() {
                 <ArrowRight size={16} color="#000" />
               </span>
               View Services
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -809,21 +693,8 @@ function UseCasesSection() {
   );
 }
 
-// ─── Root App ─────────────────────────────────────────────────────────────────
-export default function App() {
-  const routes = {
-    "/services": Services,
-    "/about": About,
-    "/service-areas": ServiceAreas,
-    "/reviews": Reviews,
-    "/contact": Contact,
-  };
-  const Page = routes[window.location.pathname];
-
-  if (Page) {
-    return <Page />;
-  }
-
+// ─── Homepage ─────────────────────────────────────────────────────────────────
+function HomePage() {
   return (
     <div
       style={{
@@ -833,13 +704,12 @@ export default function App() {
         fontFamily: "'TT Norms Pro', sans-serif",
       }}
     >
-      {/* Hero wrapper */}
+      {/* Hero wrapper — full viewport height */}
       <div
         style={{
           height: "100vh",
           display: "flex",
           flexDirection: "column",
-          overflow: "hidden",
           position: "relative",
         }}
       >
@@ -851,6 +721,27 @@ export default function App() {
       <InfoSection />
       <BackedBySection />
       <UseCasesSection />
+      <Footer />
     </div>
+  );
+}
+
+// ─── Root App ─────────────────────────────────────────────────────────────────
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/service-areas" element={<ServiceAreas />} />
+        <Route path="/reviews" element={<Reviews />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

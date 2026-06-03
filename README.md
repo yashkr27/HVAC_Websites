@@ -1,267 +1,193 @@
-You are working inside an existing React + Vite + Tailwind project.
+Before making any changes, inspect the existing project structure.
 
-The homepage already exists and is the design reference.
+CRITICAL REQUIREMENTS
 
-IMPORTANT:
+DO NOT REMOVE ANY EXISTING PAGES.
 
-* Do NOT modify the existing Home page.
-* Reuse the exact same design language, spacing, typography, navbar, buttons, card styles, border radius, and overall aesthetic.
-* The new pages should feel like they belong to the same website.
-* Keep the premium modern HVAC style already established.
+DO NOT REDUCE THE WEBSITE SCOPE.
 
-Create FIVE new pages:
+If pages already exist, preserve them and improve them.
 
-1. src/pages/Services.jsx
-2. src/pages/About.jsx
-3. src/pages/ServiceAreas.jsx
-4. src/pages/Reviews.jsx
-5. src/pages/Contact.jsx
+Create and/or maintain the following pages:
 
-Also update routing so these pages are accessible.
+1. Home
+2. Services
+3. About
+4. Service Areas
+5. Reviews
+6. Gallery
+7. Contact Us
+8. Sign In
+9. Sign Up
+10. Dashboard
 
----
+The final website must include all pages above.
 
-## SERVICES PAGE
+PROJECT ASSETS
 
-Hero:
-Title:
-"Professional HVAC Services"
+A company logo already exists:
 
-Subtitle:
-"Reliable heating, cooling, indoor air quality, and maintenance solutions."
+logo.webp
 
-Sections:
+Search the project for logo.webp and use it throughout the website.
 
-Service Grid (2x4 cards)
+Replace any placeholder logos or generated SVG logos with logo.webp.
 
-Cards:
+Do not generate a replacement logo.
 
-* AC Repair
-* AC Installation
-* Furnace Repair
-* Furnace Installation
-* Indoor Air Quality
-* Preventive Maintenance
-* Commercial HVAC
-* Emergency Service
+DESIGN SYSTEM
 
-Each card should contain:
+The existing homepage is the approved design system.
 
-* Title
-* Short description
-* CTA arrow
+Reuse:
 
-Below services:
+* Navbar
+* Footer
+* Buttons
+* Typography
+* Card styles
+* Animations
+* Colors
+* Border radius
+* Layout patterns
+* Section spacing
 
-Large CTA Banner:
+All new pages must visually match the homepage.
 
-"Need service today?"
+NAVIGATION
 
-"Schedule your appointment with our certified technicians."
+Navbar must contain:
 
-Button:
-Get Free Estimate
+* Home
+* Services
+* About
+* Service Areas
+* Reviews
+* Gallery
+* Contact Us
 
----
+On desktop:
 
-## ABOUT PAGE
+Navigation centered.
 
-Hero:
-Title:
-"About AAA Heating & Air Conditioning"
+Logo positioned center-left with proper spacing.
 
-Subtitle:
-"Committed to comfort, reliability, and long-term customer relationships."
+CTA button on right.
 
-Section 1:
-Our Story
+AUTHENTICATION
 
-Paragraph describing company experience and commitment.
+Create:
 
-Section 2:
-Three Feature Cards
+/signin
+/signup
 
-* Licensed & Insured
-* Experienced Technicians
-* Customer First Approach
+Use premium modern forms matching homepage design.
 
-Section 3:
-Why Homeowners Choose Us
+SIGN IN
 
-Bullet points:
+Fields:
 
-* Transparent pricing
-* Fast response times
-* Quality workmanship
-* Trusted local reputation
+* Email
+* Password
 
-CTA:
-Contact Our Team
+Actions:
 
----
+* Sign In
+* Forgot Password
 
-## SERVICE AREAS PAGE
-
-Hero:
-Title:
-"Areas We Serve"
-
-Subtitle:
-"Proudly serving homeowners and businesses across Chicagoland."
-
-Create location cards:
-
-* Homer Glen
-* Orland Park
-* Oak Brook
-* Downers Grove
-* Naperville
-* Tinley Park
-* Joliet
-* Lemont
-
-Use responsive grid.
-
-Each card includes:
-
-* City Name
-* Short service description
-* Learn More button
-
-Bottom CTA:
-
-"Don't see your location?"
-
-Button:
-Contact Us
-
----
-
-## REVIEWS PAGE
-
-Hero:
-Title:
-"Customer Reviews"
-
-Subtitle:
-"See what homeowners and businesses say about our work."
-
-Create review cards.
-
-Minimum 6 reviews.
-
-Each review card contains:
-
-* Customer Name
-* Star Rating
-* Review Text
-
-Example categories:
-
-* AC Repair
-* Furnace Replacement
-* Emergency Service
-* Maintenance Plan
-
-Add a statistics section:
-
-* 500+ Projects Completed
-* 4.9 Average Rating
-* 98% Customer Satisfaction
-
-Bottom CTA:
-
-"Ready to experience the difference?"
-
-Button:
-Schedule Service
-
----
-
-## CONTACT PAGE
-
-Hero:
-Title:
-"Get Your Free Estimate"
-
-Subtitle:
-"We're here to help with all your heating and cooling needs."
-
-Main Layout:
-Two columns.
-
-Left:
-
-Contact Form
+SIGN UP
 
 Fields:
 
 * Full Name
 * Email
 * Phone
-* Service Needed
-* Message
+* Password
+* Confirm Password
 
-Submit Button:
-Request Estimate
+Action:
 
-Right:
+* Create Account
 
-Contact Information Card
+DASHBOARD
+
+Create:
+
+/dashboard
+
+Purpose:
+
+Customer HVAC portal.
+
+Sections:
+
+* Welcome Header
+* Upcoming Appointments
+* Service Requests
+* Maintenance Plans
+* Recent Activity
+* Account Information
+
+Dashboard should reuse homepage design language.
+
+GALLERY PAGE
+
+Create:
+
+/gallery
+
+Grid layout.
+
+Showcase:
+
+* HVAC installations
+* Repair projects
+* Commercial work
+* Residential work
+
+Use responsive masonry/grid layout.
+
+Large visual focus.
+
+CONTACT US PAGE
+
+Create:
+
+/contact
 
 Include:
 
-* Phone Number
-* Email Address
-* Business Hours
-* Emergency Service Available
+* Contact form
+* Phone
+* Email
+* Office Hours
+* Emergency Service CTA
 
-Add a large CTA card below:
+ROUTING
 
-"Need Immediate Assistance?"
-
-Button:
-Call Now
-
----
-
-## SHARED REQUIREMENTS
-
-1. Reuse existing Navbar component.
-2. Reuse existing Footer component.
-3. Reuse existing button styling.
-4. Reuse existing spacing system.
-5. Reuse existing typography hierarchy.
-6. Fully responsive.
-7. Mobile friendly.
-8. Use modern HVAC-related imagery placeholders where needed.
-9. Keep visual consistency with Home page.
-10. Create clean, production-quality React components.
-
----
-
-## ROUTING
-
-Update App.jsx and routing:
+Configure React Router for:
 
 /
-→ Home
-
 /services
-→ Services
-
 /about
-→ About
-
 /service-areas
-→ ServiceAreas
-
 /reviews
-→ Reviews
-
+/gallery
 /contact
-→ Contact
+/signin
+/signup
+/dashboard
 
-Update Navbar links accordingly.
+FULL WIDTH LAYOUT
 
-Return complete code for all new page files and routing updates.
+Make the site feel premium.
+
+Avoid narrow boxed layouts.
+
+Hero sections should utilize available screen width.
+
+Use larger containers and improved spacing.
+
+OBJECTIVE
+
+Create a complete multi-page HVAC website experience while preserving the existing homepage aesthetic and using the homepage as the design reference for all other pages.
