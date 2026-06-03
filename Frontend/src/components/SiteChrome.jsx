@@ -1,6 +1,8 @@
-import { ArrowRight, Mail, Phone } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import logoWebp from "../../assets/logo.webp";
+import { ArrowRight, Mail, Phone, User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logoWebp from "../assets/logo.webp";
+import { useAuth } from "../context/AuthContext.jsx";
 import { hvacImages, pageStyles } from "./siteData.js";
 
 export function ButtonLink({ href = "/contact", children, compact = false }) {
@@ -48,8 +50,144 @@ export function ButtonLink({ href = "/contact", children, compact = false }) {
   );
 }
 
+// ─── User Dropdown ─────────────────────────────────────────────────────────────
+function UserDropdown({ session, signOut }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const navigate = useNavigate();
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  async function handleSignOut() {
+    setOpen(false);
+    await signOut();
+    navigate("/");
+  }
+
+  const email = session?.user?.email ?? "";
+  const truncatedEmail = email.length > 22 ? email.slice(0, 22) + "…" : email;
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      {/* Icon Button */}
+      <button
+        id="user-menu-btn"
+        onClick={() => setOpen((o) => !o)}
+        aria-label="User menu"
+        aria-expanded={open}
+        style={{
+          width: "38px",
+          height: "38px",
+          borderRadius: "9999px",
+          background: open ? "#222" : "#111",
+          border: "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: "background 0.2s",
+          flexShrink: 0,
+        }}
+        onMouseEnter={(e) => { if (!open) e.currentTarget.style.background = "#222"; }}
+        onMouseLeave={(e) => { if (!open) e.currentTarget.style.background = "#111"; }}
+      >
+        <User size={18} color="#fff" />
+      </button>
+
+      {/* Dropdown Panel */}
+      {open && (
+        <div
+          style={{
+            position: "absolute",
+            top: "calc(100% + 10px)",
+            right: 0,
+            minWidth: "220px",
+            background: "#1a1a1a",
+            borderRadius: "14px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
+            overflow: "hidden",
+            zIndex: 100,
+            fontFamily: "'TT Norms Pro', sans-serif",
+          }}
+        >
+          {/* Signed in as */}
+          <div style={{ padding: "18px 20px 14px" }}>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "12px", fontWeight: 600, margin: "0 0 6px", letterSpacing: "0.02em" }}>
+              Signed in as:
+            </p>
+            <p style={{ color: "rgba(255,255,255,0.72)", fontSize: "14px", margin: 0, letterSpacing: "-0.01em" }}>
+              {truncatedEmail}
+            </p>
+          </div>
+
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }} />
+
+          {/* MY ACCOUNT */}
+          <Link
+            to="/"
+            onClick={() => setOpen(false)}
+            style={{
+              display: "block",
+              padding: "14px 20px",
+              color: "#fff",
+              textDecoration: "none",
+              fontSize: "13px",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              transition: "background 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          >
+            My Account
+          </Link>
+
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }} />
+
+          {/* Sign out */}
+          <button
+            onClick={handleSignOut}
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "14px 20px",
+              background: "none",
+              border: "none",
+              color: "rgba(255,255,255,0.65)",
+              textAlign: "left",
+              fontSize: "14px",
+              cursor: "pointer",
+              fontFamily: "'TT Norms Pro', sans-serif",
+              transition: "background 0.15s, color 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+              e.currentTarget.style.color = "#fff";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.color = "rgba(255,255,255,0.65)";
+            }}
+          >
+            Sign out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Navbar() {
   const location = useLocation();
+  const { session, signOut } = useAuth();
   const links = [
     ["Services", "/services"],
     ["About", "/about"],
@@ -113,7 +251,7 @@ export function Navbar() {
           gap: "18px",
         }}
       >
-        {/* Left: Logo — nudged inward from edge */}
+        {/* Left: Logo */}
         <Link
           to="/"
           style={{
@@ -136,7 +274,7 @@ export function Navbar() {
           />
         </Link>
 
-        {/* Center: Nav Links — always visually centered */}
+        {/* Center: Nav Links */}
         <div
           className="site-nav-links"
           style={{
@@ -156,52 +294,71 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Right: Sign In + CTA */}
+        {/* Right: Auth controls */}
         <div style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: "12px" }}>
-          <Link
-            to="/signin"
-            className="site-nav-link-item"
-            style={{
-              fontSize: "14px",
-              fontWeight: 500,
-              color: "#555",
-              textDecoration: "none",
-              fontFamily: "'TT Norms Pro', sans-serif",
-              whiteSpace: "nowrap",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
-          >
-            Sign In
-          </Link>
-          <Link
-            className="site-nav-cta"
-            to="/contact"
-            style={{
-              background: "#000",
-              color: "#fff",
-              fontSize: "15px",
-              fontWeight: 500,
-              padding: "10px 28px",
-              borderRadius: "9999px",
-              border: "none",
-              cursor: "pointer",
-              transition: "background 0.2s",
-              fontFamily: "'TT Norms Pro', sans-serif",
-              whiteSpace: "nowrap",
-              textDecoration: "none",
-              display: "inline-block",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#333")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#000")}
-          >
-            Get Free Estimate
-          </Link>
+          {session ? (
+            /* Logged in — show user icon + dropdown */
+            <>
+              <div
+                style={{
+                  width: "1px",
+                  height: "22px",
+                  background: "rgba(0,0,0,0.18)",
+                  flexShrink: 0,
+                }}
+              />
+              <UserDropdown session={session} signOut={signOut} />
+            </>
+          ) : (
+            /* Logged out — show Sign In + CTA */
+            <>
+              <Link
+                to="/signin"
+                className="site-nav-link-item"
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "#555",
+                  textDecoration: "none",
+                  fontFamily: "'TT Norms Pro', sans-serif",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+              >
+                Sign In
+              </Link>
+              <Link
+                className="site-nav-cta"
+                to="/contact"
+                style={{
+                  background: "#000",
+                  color: "#fff",
+                  fontSize: "15px",
+                  fontWeight: 500,
+                  padding: "10px 28px",
+                  borderRadius: "9999px",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "background 0.2s",
+                  fontFamily: "'TT Norms Pro', sans-serif",
+                  whiteSpace: "nowrap",
+                  textDecoration: "none",
+                  display: "inline-block",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#333")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#000")}
+              >
+                Get Free Estimate
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
   );
 }
+
 
 export function Footer() {
   return (

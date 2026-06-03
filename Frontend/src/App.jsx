@@ -3,13 +3,13 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import logoWebp from "./assets/logo.webp";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import Reviews from "./pages/Reviews.jsx";
 import ServiceAreas from "./pages/ServiceAreas.jsx";
 import Services from "./pages/Services.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import VerifyOTP from "./pages/VerifyOTP.jsx";
 import { Footer, Navbar } from "./components/SiteChrome.jsx";
 
 const hvacImages = {
@@ -740,7 +740,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
       </Routes>
     </BrowserRouter>
   );

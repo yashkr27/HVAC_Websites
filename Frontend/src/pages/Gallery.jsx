@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { PageShell } from "../components/SiteChrome.jsx";
 import { pageStyles } from "../components/siteData.js";
+import { supabase } from "../lib/supabase";
+import { useEffect } from "react";
 
-const galleryImages = [
+const staticGalleryImages = [
   {
     src: "https://images.pexels.com/photos/6471913/pexels-photo-6471913.jpeg?auto=compress&cs=tinysrgb&w=1200",
     alt: "HVAC technician inspecting outdoor AC unit",
@@ -69,11 +72,30 @@ const galleryImages = [
 
 const categories = ["All", "Residential", "Commercial", "Maintenance", "Heating", "Cooling", "Air Quality", "Smart Home"];
 
-import { useState } from "react";
-
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [galleryImages, setGalleryImages] = useState(staticGalleryImages);
+
+  useEffect(() => {
+    async function fetchGallery() {
+      const { data } = await supabase
+        .from("gallery")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (data && data.length > 0) {
+        const mapped = data.map((item, i) => ({
+          src: item.image_url,
+          alt: item.description || item.title || "HVAC project photo",
+          category: item.category || "Residential",
+          label: item.title || "Project Photo",
+          tall: i % 3 === 0,
+        }));
+        setGalleryImages(mapped);
+      }
+    }
+    fetchGallery();
+  }, []);
 
   const filtered =
     activeCategory === "All"
