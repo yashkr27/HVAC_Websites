@@ -1,8 +1,9 @@
 import { CheckCircle, Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoWebp from "../assets/logo.webp";
 import { pageStyles } from "../components/siteData.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const inputStyle = {
   width: "100%",
@@ -108,18 +109,38 @@ const perks = [
 ];
 
 export default function SignUp() {
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", confirm: "" });
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
 
   function handleChange(field) {
     return (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
+    if (form.password !== form.confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
     setLoading(true);
-    setTimeout(() => { setLoading(false); setDone(true); }, 1500);
+    const nameParts = form.name.trim().split(" ");
+    const first_name = nameParts[0] || "";
+    const last_name = nameParts.slice(1).join(" ") || "";
+    const { error: signUpError } = await signUp(form.email, form.password, {
+      first_name,
+      last_name,
+      phone: form.phone,
+    });
+    setLoading(false);
+    if (signUpError) {
+      setError(signUpError.message || "Failed to create account. Please try again.");
+    } else {
+      navigate("/verify-otp", { state: { email: form.email } });
+    }
   }
 
   return (
@@ -211,42 +232,7 @@ export default function SignUp() {
           />
         </Link>
 
-        {done ? (
-          <div style={{ textAlign: "center", padding: "20px 0" }}>
-            <CheckCircle size={56} color="#000" style={{ marginBottom: "20px" }} />
-            <h1
-              style={{
-                fontSize: "28px",
-                fontWeight: 500,
-                letterSpacing: "-0.02em",
-                color: "#000",
-                margin: "0 0 12px",
-              }}
-            >
-              Account Created!
-            </h1>
-            <p style={{ ...pageStyles.body, marginBottom: "28px" }}>
-              Welcome to your AAA Heating &amp; Air customer portal.
-            </p>
-            <Link
-              to="/dashboard"
-              style={{
-                display: "inline-block",
-                background: "#000",
-                color: "#fff",
-                padding: "13px 32px",
-                borderRadius: "12px",
-                textDecoration: "none",
-                fontWeight: 500,
-                fontSize: "15px",
-                fontFamily: "'TT Norms Pro', sans-serif",
-              }}
-            >
-              Go to Dashboard →
-            </Link>
-          </div>
-        ) : (
-          <>
+        <>
             <p style={{ ...pageStyles.eyebrow, marginBottom: "10px" }}>Get started</p>
             <h1
               style={{
@@ -299,6 +285,13 @@ export default function SignUp() {
               >
                 {loading ? "Creating Account…" : "Create Account"}
               </button>
+
+              {/* Error message */}
+              {error && (
+                <p style={{ color: "#c0392b", fontSize: "14px", textAlign: "center", margin: "4px 0 0", background: "rgba(192,57,43,0.07)", borderRadius: "8px", padding: "10px 14px" }}>
+                  {error}
+                </p>
+              )}
             </form>
 
             <p style={{ ...pageStyles.body, textAlign: "center", marginTop: "28px" }}>
@@ -317,7 +310,6 @@ export default function SignUp() {
               </Link>
             </p>
           </>
-        )}
 
         <div style={{ textAlign: "center", marginTop: "40px" }}>
           <Link

@@ -1,8 +1,11 @@
 import { Star } from "lucide-react";
+import { useEffect, useState } from "react";
 import { CTASection, PageHero, PageShell } from "../components/SiteChrome.jsx";
 import { hvacImages, pageStyles } from "../components/siteData.js";
+import { supabase } from "../lib/supabase";
 
-const reviews = [
+// Static fallback reviews — shown when DB is empty
+const staticReviews = [
   {
     name: "Amanda R.",
     initials: "AR",
@@ -92,6 +95,30 @@ function Avatar({ initials }) {
 }
 
 export default function Reviews() {
+  const [reviews, setReviews] = useState(staticReviews);
+
+  useEffect(() => {
+    async function fetchReviews() {
+      const { data } = await supabase
+        .from("reviews")
+        .select("*, profiles(first_name, last_name)")
+        .eq("status", "approved")
+        .order("created_at", { ascending: false });
+      if (data && data.length > 0) {
+        const mapped = data.map((r) => ({
+          name: [r.profiles?.first_name, r.profiles?.last_name].filter(Boolean).join(" ") || "Customer",
+          initials: ([r.profiles?.first_name?.[0], r.profiles?.last_name?.[0]].filter(Boolean).join("") || "C").toUpperCase(),
+          category: "Verified Customer",
+          text: r.comments,
+          location: "",
+          rating: r.rating,
+        }));
+        setReviews(mapped);
+      }
+    }
+    fetchReviews();
+  }, []);
+
   return (
     <PageShell>
       <PageHero
@@ -134,7 +161,7 @@ export default function Reviews() {
             textAlign: "left",
           }}
         >
-          {reviews.map(({ name, initials, category, text, location }) => (
+          {reviews.map(({ name, initials, category, text, location }, idx) => (
             <article
               key={`${name}-${category}`}
               style={{

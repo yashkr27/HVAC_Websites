@@ -2,6 +2,8 @@ import { CheckCircle, Clock, Mail, Phone, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { ButtonLink, PageHero, PageShell } from "../components/SiteChrome.jsx";
 import { hvacImages, pageStyles } from "../components/siteData.js";
+import { useAuth } from "../context/AuthContext.jsx";
+import { supabase } from "../lib/supabase";
 
 const inputStyle = {
   width: "100%",
@@ -16,7 +18,7 @@ const inputStyle = {
   transition: "border-color 0.2s",
 };
 
-function FormInput({ type = "text", name, placeholder, label, style = {} }) {
+function FormInput({ type = "text", name, placeholder, label, style = {}, value, onChange }) {
   return (
     <input
       style={{ ...inputStyle, ...style }}
@@ -24,6 +26,8 @@ function FormInput({ type = "text", name, placeholder, label, style = {} }) {
       name={name}
       placeholder={placeholder}
       aria-label={label || placeholder}
+      value={value}
+      onChange={onChange}
       onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)")}
       onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)")}
     />
@@ -31,7 +35,47 @@ function FormInput({ type = "text", name, placeholder, label, style = {} }) {
 }
 
 function ContactForm() {
+  const { session } = useAuth();
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    name: "", email: "", phone: "", service: "", urgency: "", message: "",
+  });
+
+  function handleChange(field) {
+    return (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const urgencyMap = {
+      emergency: "emergency",
+      today: "within_24hrs",
+      scheduled: "this_week",
+      estimate: "just_browsing",
+    };
+
+    const { error: insertError } = await supabase.from("estimates").insert({
+      user_id: session?.user?.id ?? null,
+      full_name: form.name,
+      email: form.email,
+      phone: form.phone,
+      service_type: form.service,
+      urgency: urgencyMap[form.urgency] || "just_browsing",
+      notes: form.message || null,
+    });
+
+    setLoading(false);
+    if (insertError) {
+      setError("Something went wrong. Please try again or call us directly.");
+    } else {
+      setSubmitted(true);
+    }
+  }
 
   if (submitted) {
     return (
@@ -56,7 +100,7 @@ function ContactForm() {
           to confirm your appointment.
         </p>
         <button
-          onClick={() => setSubmitted(false)}
+          onClick={() => { setSubmitted(false); setForm({ name: "", email: "", phone: "", service: "", urgency: "", message: "" }); }}
           style={{
             background: "none",
             border: "1px solid rgba(0,0,0,0.2)",
@@ -78,13 +122,7 @@ function ContactForm() {
   }
 
   return (
-    <form
-      style={pageStyles.card}
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSubmitted(true);
-      }}
-    >
+    <form style={pageStyles.card} onSubmit={handleSubmit}>
       <h2 style={{ ...pageStyles.h2, marginBottom: "28px" }}>Request Estimate</h2>
       <div
         style={{
@@ -94,14 +132,16 @@ function ContactForm() {
           marginBottom: "14px",
         }}
       >
-        <FormInput name="name" placeholder="Full Name" />
-        <FormInput type="email" name="email" placeholder="Email Address" />
-        <FormInput type="tel" name="phone" placeholder="Phone Number" />
-        <FormInput name="service" placeholder="Service Needed" />
+        <FormInput name="name" placeholder="Full Name" value={form.name} onChange={handleChange("name")} />
+        <FormInput type="email" name="email" placeholder="Email Address" value={form.email} onChange={handleChange("email")} />
+        <FormInput type="tel" name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange("phone")} />
+        <FormInput name="service" placeholder="Service Needed" value={form.service} onChange={handleChange("service")} />
       </div>
       <select
         name="urgency"
         aria-label="Urgency Level"
+        value={form.urgency}
+        onChange={handleChange("urgency")}
         style={{ ...inputStyle, marginBottom: "14px", cursor: "pointer" }}
         onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)")}
         onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)")}
@@ -117,12 +157,20 @@ function ContactForm() {
         name="message"
         placeholder="Additional details (optional)"
         aria-label="Message"
+        value={form.message}
+        onChange={handleChange("message")}
         onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)")}
         onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)")}
       />
+      {error && (
+        <p style={{ color: "#c0392b", fontSize: "14px", background: "rgba(192,57,43,0.07)", borderRadius: "8px", padding: "10px 14px", margin: "10px 0 0" }}>
+          {error}
+        </p>
+      )}
       <div style={{ marginTop: "24px" }}>
         <button
           type="submit"
+          disabled={loading}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -137,14 +185,15 @@ function ContactForm() {
             paddingBottom: "8px",
             borderRadius: "9999px",
             border: "none",
-            cursor: "pointer",
+            cursor: loading ? "not-allowed" : "pointer",
+            opacity: loading ? 0.65 : 1,
             transition: "background 0.2s",
             fontFamily: "'TT Norms Pro', sans-serif",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#333")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#000")}
+          onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#333"; }}
+          onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = "#000"; }}
         >
-          Submit Request
+          {loading ? "Submitting…" : "Submit Request"}
           <span
             style={{
               background: "#fff",

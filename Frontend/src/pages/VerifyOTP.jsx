@@ -1,66 +1,60 @@
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Lock } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import logoWebp from "../assets/logo.webp";
 import { pageStyles } from "../components/siteData.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const inputStyle = {
   width: "100%",
   border: "1.5px solid rgba(0,0,0,0.12)",
   borderRadius: "12px",
   padding: "14px 16px 14px 48px",
-  fontSize: "16px",
+  fontSize: "24px", // larger for OTP
+  letterSpacing: "0.2em",
   fontFamily: "'TT Norms Pro', sans-serif",
   background: "#fff",
   color: "#000",
   outline: "none",
   transition: "border-color 0.2s",
+  textAlign: "center",
 };
 
-function InputField({ icon: Icon, type, name, placeholder, value, onChange }) {
-  const [focused, setFocused] = useState(false);
-  return (
-    <div style={{ position: "relative" }}>
-      <Icon
-        size={17}
-        color={focused ? "#000" : "rgba(0,0,0,0.38)"}
-        style={{
-          position: "absolute",
-          left: "16px",
-          top: "50%",
-          transform: "translateY(-50%)",
-          transition: "color 0.2s",
-          pointerEvents: "none",
-        }}
-      />
-      <input
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        aria-label={placeholder}
-        value={value}
-        onChange={onChange}
-        style={{
-          ...inputStyle,
-          borderColor: focused ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.12)",
-        }}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-      />
-    </div>
-  );
-}
-
-export default function SignIn() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function VerifyOTP() {
+  const { verifyOtp } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  const email = location.state?.email;
+
+  // If accessed directly without an email, redirect to signup
+  if (!email) {
+    return <Navigate to="/signup" replace />;
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    if (!token || token.length < 6) {
+      setError("Please enter a valid 6-digit code.");
+      return;
+    }
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500);
+    setError("");
+    try {
+      const { error } = await verifyOtp(email, token);
+      if (error) {
+        setError(error.message || "Invalid verification code. Please try again.");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setError("Failed to verify code. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -104,7 +98,7 @@ export default function SignIn() {
           />
         </Link>
 
-        <p style={{ ...pageStyles.eyebrow, marginBottom: "10px" }}>Welcome back</p>
+        <p style={{ ...pageStyles.eyebrow, marginBottom: "10px" }}>Verification</p>
         <h1
           style={{
             fontSize: "clamp(28px, 3vw, 36px)",
@@ -114,23 +108,14 @@ export default function SignIn() {
             margin: "0 0 8px",
           }}
         >
-          Sign in to your account
+          Check your email
         </h1>
-        <p style={{ ...pageStyles.body, marginBottom: "36px" }}>
-          Access your appointments, service history, and maintenance plans.
+        <p style={{ ...pageStyles.body, marginBottom: "36px", lineHeight: 1.6 }}>
+          We sent a 6-digit verification code to <strong>{email}</strong>. 
+          Please enter it below to confirm your account.
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-          <InputField
-            icon={Mail}
-            type="email"
-            name="email"
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          {/* Password with toggle */}
           <div style={{ position: "relative" }}>
             <Lock
               size={17}
@@ -144,55 +129,16 @@ export default function SignIn() {
               }}
             />
             <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              aria-label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                ...inputStyle,
-                paddingRight: "48px",
-              }}
+              type="text"
+              name="token"
+              placeholder="000000"
+              maxLength={6}
+              value={token}
+              onChange={(e) => setToken(e.target.value.replace(/[^0-9]/g, ''))}
+              style={inputStyle}
               onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.5)")}
               onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)")}
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-              style={{
-                position: "absolute",
-                right: "14px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "rgba(0,0,0,0.4)",
-                padding: "4px",
-                display: "flex",
-              }}
-            >
-              {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-            </button>
-          </div>
-
-          {/* Forgot password */}
-          <div style={{ textAlign: "right", marginTop: "-4px" }}>
-            <Link
-              to="/forgot-password"
-              style={{
-                fontSize: "13px",
-                color: "rgba(0,0,0,0.5)",
-                textDecoration: "none",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0,0,0,0.5)")}
-            >
-              Forgot password?
-            </Link>
           </div>
 
           <button
@@ -216,12 +162,19 @@ export default function SignIn() {
             onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#333"; }}
             onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = "#000"; }}
           >
-            {loading ? "Signing in…" : "Sign In"}
+            {loading ? "Verifying…" : "Verify Account"}
           </button>
+
+          {/* Error message */}
+          {error && (
+            <p style={{ color: "#c0392b", fontSize: "14px", textAlign: "center", margin: "4px 0 0", background: "rgba(192,57,43,0.07)", borderRadius: "8px", padding: "10px 14px" }}>
+              {error}
+            </p>
+          )}
         </form>
 
-        <p style={{ ...pageStyles.body, textAlign: "center", marginTop: "32px" }}>
-          Don't have an account?{" "}
+        <p style={{ ...pageStyles.body, textAlign: "center", marginTop: "32px", fontSize: "14px" }}>
+          Didn't receive the email? Check your spam folder or{" "}
           <Link
             to="/signup"
             style={{
@@ -232,7 +185,7 @@ export default function SignIn() {
               paddingBottom: "1px",
             }}
           >
-            Create one
+            try again
           </Link>
         </p>
 
@@ -260,7 +213,7 @@ export default function SignIn() {
         style={{
           flex: 1,
           backgroundImage:
-            "linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 100%), url('https://images.pexels.com/photos/6471913/pexels-photo-6471913.jpeg?auto=compress&cs=tinysrgb&w=1400')",
+            "linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 100%), url('https://images.pexels.com/photos/5463582/pexels-photo-5463582.jpeg?auto=compress&cs=tinysrgb&w=1400')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           display: "flex",
@@ -282,11 +235,8 @@ export default function SignIn() {
               marginBottom: "20px",
             }}
           >
-            "From the first call to the final walkthrough — the team made everything easy."
+            "Security and peace of mind — for your home and your data."
           </p>
-          <footer style={{ color: "rgba(255,255,255,0.65)", fontSize: "14px" }}>
-            — Amanda R., Homer Glen, IL
-          </footer>
         </blockquote>
       </div>
     </div>
