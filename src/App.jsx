@@ -1,4 +1,9 @@
 import { ArrowRight } from "lucide-react";
+import About from "./pages/About.jsx";
+import Contact from "./pages/Contact.jsx";
+import Reviews from "./pages/Reviews.jsx";
+import ServiceAreas from "./pages/ServiceAreas.jsx";
+import Services from "./pages/Services.jsx";
 
 const hvacImages = {
   hero:
@@ -78,11 +83,16 @@ function Navbar() {
           }}
           className="hidden md:flex"
         >
-          {["Services", "About", "Service Areas", "Reviews", "Contact"].map(
-            (link) => (
+          {[
+            ["Services", "/services"],
+            ["About", "/about"],
+            ["Service Areas", "/service-areas"],
+            ["Reviews", "/reviews"],
+            ["Contact", "/contact"],
+          ].map(([link, href]) => (
               <a
                 key={link}
-                href="#"
+                href={href}
                 style={{
                   fontSize: "15px",
                   fontWeight: 500,
@@ -96,8 +106,7 @@ function Navbar() {
               >
                 {link}
               </a>
-            )
-          )}
+            ))}
         </div>
 
         {/* Right: CTA Button */}
@@ -802,6 +811,19 @@ function UseCasesSection() {
 
 // ─── Root App ─────────────────────────────────────────────────────────────────
 export default function App() {
+  const routes = {
+    "/services": Services,
+    "/about": About,
+    "/service-areas": ServiceAreas,
+    "/reviews": Reviews,
+    "/contact": Contact,
+  };
+  const Page = routes[window.location.pathname];
+
+  if (Page) {
+    return <Page />;
+  }
+
   return (
     <div
       style={{
