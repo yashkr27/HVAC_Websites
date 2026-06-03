@@ -1,25 +1,12 @@
 import { ArrowRight, Mail, Phone } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import logoWebp from "../../assets/logo.webp";
 import { hvacImages, pageStyles } from "./siteData.js";
-
-export function LogoIcon({ className = "", style }) {
-  return (
-    <svg
-      className={className}
-      style={style}
-      viewBox="0 0 256 256"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path d="M 128.005 191.173 C 128.448 156.208 156.93 128 192 128 L 192 64 L 128 64 C 128 99.346 99.346 128 64 128 L 64 192 L 128 192 Z M 192 256 L 64 256 C 28.654 256 0 227.346 0 192 L 0 64 L 64 64 L 64 0 L 192 0 C 227.346 0 256 28.654 256 64 L 256 192 L 192 192 Z" />
-    </svg>
-  );
-}
 
 export function ButtonLink({ href = "/contact", children, compact = false }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="site-pill-button"
       style={{
         display: "inline-flex",
@@ -57,17 +44,19 @@ export function ButtonLink({ href = "/contact", children, compact = false }) {
       >
         <ArrowRight size={compact ? 16 : 20} color="#000" />
       </span>
-    </a>
+    </Link>
   );
 }
 
 export function Navbar() {
+  const location = useLocation();
   const links = [
     ["Services", "/services"],
     ["About", "/about"],
     ["Service Areas", "/service-areas"],
     ["Reviews", "/reviews"],
-    ["Contact", "/contact"],
+    ["Gallery", "/gallery"],
+    ["Contact Us", "/contact"],
   ];
 
   return (
@@ -78,54 +67,76 @@ export function Navbar() {
         left: 0,
         right: 0,
         zIndex: 20,
-        padding: "20px 24px",
+        padding: "18px 40px",
       }}
     >
       <style>{`
         @media (max-width: 840px) {
-          .site-nav-links {
-            display: none !important;
-          }
-          .site-nav-cta {
-            padding-left: 18px !important;
-            padding-right: 18px !important;
-          }
+          .site-nav-links { display: none !important; }
+          .site-nav-cta { padding-left: 18px !important; padding-right: 18px !important; }
+          .site-navbar-inner { grid-template-columns: 1fr auto !important; }
+        }
+        .site-nav-link-item {
+          font-size: 15px;
+          font-weight: 500;
+          color: #555;
+          text-decoration: none;
+          transition: color 0.2s;
+          font-family: 'TT Norms Pro', sans-serif;
+          white-space: nowrap;
+          position: relative;
+          padding-bottom: 2px;
+        }
+        .site-nav-link-item:hover { color: #000; }
+        .site-nav-link-item.active {
+          color: #000;
+        }
+        .site-nav-link-item.active::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          right: 0;
+          height: 1.5px;
+          background: #000;
+          border-radius: 2px;
         }
       `}</style>
       <div
+        className="site-navbar-inner"
         style={{
-          display: "flex",
+          display: "grid",
+          gridTemplateColumns: "1fr auto 1fr",
           alignItems: "center",
-          justifyContent: "space-between",
           maxWidth: "88rem",
           margin: "0 auto",
           gap: "18px",
         }}
       >
-        <a
-          href="/"
+        {/* Left: Logo — nudged inward from edge */}
+        <Link
+          to="/"
           style={{
             display: "flex",
             alignItems: "center",
             gap: "10px",
             textDecoration: "none",
-            minWidth: "max-content",
+            justifySelf: "start",
+            paddingLeft: "12px",
           }}
         >
-          <LogoIcon style={{ width: "28px", height: "28px", color: "#000" }} />
-          <span
+          <img
+            src={logoWebp}
+            alt="AAA Heating &amp; Air logo"
             style={{
-              fontSize: "18px",
-              fontWeight: 600,
-              letterSpacing: "-0.02em",
-              color: "#000",
-              fontFamily: "'TT Norms Pro', sans-serif",
+              height: "40px",
+              width: "auto",
+              objectFit: "contain",
             }}
-          >
-            AAA Heating &amp; Air
-          </span>
-        </a>
+          />
+        </Link>
 
+        {/* Center: Nav Links — always visually centered */}
         <div
           className="site-nav-links"
           style={{
@@ -135,48 +146,58 @@ export function Navbar() {
           }}
         >
           {links.map(([label, href]) => (
-            <a
+            <Link
               key={href}
-              href={href}
-              style={{
-                fontSize: "15px",
-                fontWeight: 500,
-                color: "#555",
-                textDecoration: "none",
-                transition: "color 0.2s",
-                fontFamily: "'TT Norms Pro', sans-serif",
-                whiteSpace: "nowrap",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+              to={href}
+              className={`site-nav-link-item${location.pathname === href ? " active" : ""}`}
             >
               {label}
-            </a>
+            </Link>
           ))}
         </div>
 
-        <a
-          className="site-nav-cta"
-          href="/contact"
-          style={{
-            background: "#000",
-            color: "#fff",
-            fontSize: "15px",
-            fontWeight: 500,
-            padding: "10px 28px",
-            borderRadius: "9999px",
-            border: "none",
-            cursor: "pointer",
-            transition: "background 0.2s",
-            fontFamily: "'TT Norms Pro', sans-serif",
-            whiteSpace: "nowrap",
-            textDecoration: "none",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#333")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#000")}
-        >
-          Get Free Estimate
-        </a>
+        {/* Right: Sign In + CTA */}
+        <div style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: "12px" }}>
+          <Link
+            to="/signin"
+            className="site-nav-link-item"
+            style={{
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "#555",
+              textDecoration: "none",
+              fontFamily: "'TT Norms Pro', sans-serif",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+          >
+            Sign In
+          </Link>
+          <Link
+            className="site-nav-cta"
+            to="/contact"
+            style={{
+              background: "#000",
+              color: "#fff",
+              fontSize: "15px",
+              fontWeight: 500,
+              padding: "10px 28px",
+              borderRadius: "9999px",
+              border: "none",
+              cursor: "pointer",
+              transition: "background 0.2s",
+              fontFamily: "'TT Norms Pro', sans-serif",
+              whiteSpace: "nowrap",
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#333")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#000")}
+          >
+            Get Free Estimate
+          </Link>
+        </div>
       </div>
     </nav>
   );
@@ -197,8 +218,16 @@ export function Footer() {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "18px" }}>
-            <LogoIcon style={{ width: "28px", height: "28px", color: "#fff" }} />
-            <strong style={{ fontSize: "18px", fontWeight: 600 }}>AAA Heating &amp; Air</strong>
+            <img
+              src={logoWebp}
+              alt="AAA Heating &amp; Air logo"
+              style={{
+                height: "36px",
+                width: "auto",
+                objectFit: "contain",
+                filter: "brightness(0) invert(1)",
+              }}
+            />
           </div>
           <p style={{ color: "rgba(255,255,255,0.68)", lineHeight: 1.6, maxWidth: "320px" }}>
             Premium HVAC repair, installation, and maintenance for homes and businesses across Chicagoland.
@@ -211,20 +240,24 @@ export function Footer() {
             ["About", "/about"],
             ["Service Areas", "/service-areas"],
             ["Reviews", "/reviews"],
-            ["Contact", "/contact"],
+            ["Gallery", "/gallery"],
+            ["Contact Us", "/contact"],
           ].map(([label, href]) => (
-            <a
+            <Link
               key={href}
-              href={href}
+              to={href}
               style={{
                 display: "block",
                 color: "rgba(255,255,255,0.68)",
                 textDecoration: "none",
                 marginBottom: "10px",
+                transition: "color 0.2s",
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.68)")}
             >
               {label}
-            </a>
+            </Link>
           ))}
         </div>
         <div>
@@ -236,6 +269,23 @@ export function Footer() {
             <Mail size={16} /> hello@aaaheatingair.com
           </p>
         </div>
+      </div>
+      <div
+        style={{
+          ...pageStyles.container,
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          marginTop: "48px",
+          paddingTop: "24px",
+          color: "rgba(255,255,255,0.4)",
+          fontSize: "13px",
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "8px",
+        }}
+      >
+        <span>© {new Date().getFullYear()} AAA Heating &amp; Air Conditioning. All rights reserved.</span>
+        <span>Chicagoland's Trusted HVAC Experts</span>
       </div>
     </footer>
   );
@@ -328,19 +378,11 @@ export function PageShell({ children }) {
   return (
     <div style={pageStyles.shell}>
       <style>{`
-        * {
-          box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         @media (max-width: 720px) {
-          .page-hero-content {
-            padding: 32px 24px !important;
-          }
-          .responsive-section {
-            padding: 64px 20px !important;
-          }
-          .contact-layout {
-            grid-template-columns: 1fr !important;
-          }
+          .page-hero-content { padding: 32px 24px !important; }
+          .responsive-section { padding: 64px 20px !important; }
+          .contact-layout { grid-template-columns: 1fr !important; }
         }
       `}</style>
       <Navbar />
