@@ -545,7 +545,17 @@ function UseCasesSection() {
         }}
       >
         {/* Left Column */}
-        <div style={{ paddingRight: "0", paddingTop: "8px" }}>
+        <div
+          style={{
+            backgroundImage: `linear-gradient(180deg, rgba(245,245,245,0.9), rgba(245,245,245,0.66) 44%, rgba(0,0,0,0.16)), url('${hvacImages.maintenance}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: "24px",
+            minHeight: "720px",
+            overflow: "hidden",
+            padding: "48px",
+          }}
+        >
           <p
             style={{
               color: "rgba(0,0,0,0.6)",
