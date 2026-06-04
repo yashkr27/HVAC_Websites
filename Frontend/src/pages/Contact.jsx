@@ -261,9 +261,9 @@ export default function Contact() {
                     {href ? (
                       <a
                         href={href}
-                        style={{ ...pageStyles.body, textDecoration: "none", color: "rgba(0,0,0,0.68)" }}
+                        style={{ ...pageStyles.body, textDecoration: "none", color: "#27272A" }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0,0,0,0.68)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = "#27272A")}
                       >
                         {value}
                       </a>

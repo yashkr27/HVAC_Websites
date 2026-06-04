@@ -200,12 +200,12 @@ export default function SignIn() {
               to="/forgot-password"
               style={{
                 fontSize: "13px",
-                color: "rgba(0,0,0,0.5)",
+                color: "#3F3F46",
                 textDecoration: "none",
                 transition: "color 0.2s",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0,0,0,0.5)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#3F3F46")}
             >
               Forgot password?
             </Link>

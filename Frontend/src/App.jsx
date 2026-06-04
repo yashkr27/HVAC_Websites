@@ -9,7 +9,8 @@ import Services from "./pages/Services.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import VerifyOTP from "./pages/VerifyOTP.jsx";
-import { Footer, Navbar } from "./components/SiteChrome.jsx";
+import { Navbar } from "./components/Navbar.jsx";
+import { Footer } from "./components/SiteChrome.jsx";
 
 const hvacImages = {
   hero:

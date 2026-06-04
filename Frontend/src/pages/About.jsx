@@ -114,7 +114,7 @@ export default function About() {
               >
                 {value}
               </p>
-              <p style={{ color: "rgba(0,0,0,0.55)", fontSize: "14px", margin: 0 }}>{label}</p>
+              <p style={{ color: "#3F3F46", fontSize: "14px", margin: 0 }}>{label}</p>
             </div>
           ))}
         </div>

@@ -259,7 +259,7 @@ export default function SignUp() {
               <PasswordField name="password" placeholder="Password" value={form.password} onChange={handleChange("password")} />
               <PasswordField name="confirm" placeholder="Confirm Password" value={form.confirm} onChange={handleChange("confirm")} />
 
-              <p style={{ fontSize: "12px", color: "rgba(0,0,0,0.45)", lineHeight: 1.55, margin: "2px 0 4px" }}>
+              <p style={{ fontSize: "12px", color: "#3F3F46", lineHeight: 1.55, margin: "2px 0 4px" }}>
                 By creating an account you agree to our Terms of Service and Privacy Policy.
               </p>
 

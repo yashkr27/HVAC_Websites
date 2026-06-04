@@ -142,7 +142,7 @@ export default function ServiceAreas() {
                     style={{
                       fontSize: "12px",
                       fontWeight: 500,
-                      color: "rgba(0,0,0,0.6)",
+                      color: "#27272A",
                       background: "rgba(0,0,0,0.06)",
                       padding: "4px 10px",
                       borderRadius: "9999px",
