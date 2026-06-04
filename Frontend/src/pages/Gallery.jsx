@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { PageShell } from "../components/SiteChrome.jsx";
 import { pageStyles } from "../components/siteData.js";
 import { supabase } from "../lib/supabase";
@@ -296,8 +297,8 @@ export default function Gallery() {
               Contact our team for a free estimate on any HVAC service.
             </p>
           </div>
-          <a
-            href="/contact"
+          <Link
+            to="/contact#request-estimate"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -334,7 +335,7 @@ export default function Gallery() {
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </span>
-          </a>
+          </Link>
         </div>
       </section>
     </PageShell>

@@ -177,7 +177,7 @@ export default function About() {
             <h2 style={{ ...pageStyles.h2, marginBottom: "24px" }}>
               Service that respects your time, home, and budget.
             </h2>
-            <ButtonLink href="/contact" compact>
+            <ButtonLink href="/contact#request-estimate" compact>
               Contact Our Team
             </ButtonLink>
           </div>

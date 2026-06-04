@@ -10,7 +10,7 @@ const navLinks = [
   ["Service Areas", "/service-areas"],
   ["Reviews", "/reviews"],
   ["Gallery", "/gallery"],
-  ["Contact Us", "/contact"],
+  ["Contact Us", "/contact#request-estimate"],
 ];
 
 function UserDropdown({ session, signOut }) {
@@ -304,7 +304,7 @@ export function Navbar() {
               </Link>
               <Link
                 className="site-nav-cta"
-                to="/contact"
+                to="/contact#request-estimate"
                 style={{
                   background: "#000",
                   color: "#fff",

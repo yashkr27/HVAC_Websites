@@ -1,5 +1,5 @@
 import { CheckCircle, Clock, Mail, Phone, ShieldCheck } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ButtonLink, PageHero, PageShell } from "../components/SiteChrome.jsx";
 import { hvacImages, pageStyles } from "../components/siteData.js";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -128,7 +128,7 @@ function ContactForm() {
   }
 
   return (
-    <form style={pageStyles.card} onSubmit={handleSubmit}>
+    <form id="request-estimate" style={pageStyles.card} onSubmit={handleSubmit}>
       <h2 style={{ ...pageStyles.h2, marginBottom: "28px" }}>Request Estimate</h2>
       <div
         style={{
@@ -219,6 +219,17 @@ function ContactForm() {
 }
 
 export default function Contact() {
+  useEffect(() => {
+    if (window.location.hash === "#request-estimate") {
+      setTimeout(() => {
+        const element = document.getElementById("request-estimate");
+        if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, []);
+
   return (
     <PageShell>
       <PageHero

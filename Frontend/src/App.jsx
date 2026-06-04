@@ -166,7 +166,7 @@ function HeroSection() {
 
           {/* CTA Button */}
           <Link
-            to="/contact"
+            to="/contact#request-estimate"
             style={{
               display: "inline-flex",
               alignItems: "center",

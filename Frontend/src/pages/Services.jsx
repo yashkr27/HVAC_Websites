@@ -221,7 +221,7 @@ export default function Services() {
               </h2>
               <p style={{ ...pageStyles.body, color: "#27272A", flex: 1 }}>{description}</p>
               <Link
-                to="/contact"
+                to="/contact#request-estimate"
                 aria-label={`Request ${title}`}
                 style={{
                   width: "38px",
