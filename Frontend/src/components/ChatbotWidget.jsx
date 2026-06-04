@@ -28,6 +28,21 @@ export default function ChatbotWidget() {
     sessionStorage.getItem("aaa-hvac-chat-tooltip-seen") === "true"
   );
   const [draft, setDraft] = useState("");
+  const [messages, setMessages] = useState([]);
+
+  function sendLocalMessage() {
+    const text = draft.trim();
+    if (!text) return;
+
+    setMessages((current) => [
+      ...current,
+      {
+        id: `${Date.now()}-${current.length}`,
+        text,
+      },
+    ]);
+    setDraft("");
+  }
 
   useEffect(() => {
     if (isAuthPage) {
@@ -112,19 +127,21 @@ export default function ChatbotWidget() {
             </div>
           </div>
 
-          <div className="hvac-chat-message-row">
-            <p className="hvac-chat-bubble hvac-chat-bubble-bot">
-              I can help you find the right service path, from urgent repairs to estimates and
-              maintenance.
-            </p>
-          </div>
-          <div className="hvac-chat-message-row is-user">
-            <p className="hvac-chat-bubble hvac-chat-bubble-user">I need help with my HVAC system.</p>
-          </div>
+          {messages.map((message) => (
+            <div key={message.id} className="hvac-chat-message-row is-user">
+              <p className="hvac-chat-bubble hvac-chat-bubble-user">{message.text}</p>
+            </div>
+          ))}
         </div>
 
         <div className="hvac-chat-input-area">
-          <div className="hvac-chat-input-shell">
+          <form
+            className="hvac-chat-input-shell"
+            onSubmit={(event) => {
+              event.preventDefault();
+              sendLocalMessage();
+            }}
+          >
             <input
               type="text"
               value={draft}
@@ -132,10 +149,15 @@ export default function ChatbotWidget() {
               placeholder="Type your message..."
               aria-label="Type your message"
             />
-            <button className="hvac-chat-send" type="button" aria-label="Send message">
+            <button
+              className="hvac-chat-send"
+              type="submit"
+              aria-label="Send message"
+              disabled={!draft.trim()}
+            >
               <Send size={17} />
             </button>
-          </div>
+          </form>
         </div>
       </section>
 

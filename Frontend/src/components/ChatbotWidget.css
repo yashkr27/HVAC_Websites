@@ -300,6 +300,12 @@
   transform: scale(1.03);
 }
 
+.hvac-chat-send:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+  transform: none;
+}
+
 @media (max-width: 900px) {
   .hvac-chat-window {
     width: 340px;
