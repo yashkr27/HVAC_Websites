@@ -74,11 +74,12 @@ const categories = ["All", "Residential", "Commercial", "Maintenance", "Heating"
 
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [hoveredIndex, setHoveredIndex] = useState(null);
   const [galleryImages, setGalleryImages] = useState(staticGalleryImages);
 
   useEffect(() => {
     async function fetchGallery() {
+      if (!supabase) return;
+
       const { data } = await supabase
         .from("gallery")
         .select("*")
@@ -223,8 +224,6 @@ export default function Gallery() {
             <div
               key={`${img.label}-${i}`}
               className="gallery-item"
-              onMouseEnter={() => setHoveredIndex(i)}
-              onMouseLeave={() => setHoveredIndex(null)}
             >
               <img
                 src={img.src}

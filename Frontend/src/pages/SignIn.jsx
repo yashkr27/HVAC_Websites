@@ -72,7 +72,7 @@ export default function SignIn() {
       } else {
         navigate("/");
       }
-    } catch (err) {
+    } catch {
       setError("Failed to sign in. Please check your credentials.");
     } finally {
       setLoading(false);

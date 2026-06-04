@@ -1,14 +1,26 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types/database.types';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'Missing Supabase environment variables. ' +
-    'Ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set in your .env file.'
-  );
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+
+export const missingSupabaseMessage =
+  'Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to Frontend/.env to enable database and auth features.';
+
+if (!isSupabaseConfigured) {
+  console.warn(missingSupabaseMessage);
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+export const supabase = isSupabaseConfigured
+  ? createClient<Database>(supabaseUrl as string, supabaseAnonKey as string)
+  : null;
+
+export function getSupabaseClient() {
+  if (!supabase) {
+    throw new Error(missingSupabaseMessage);
+  }
+
+  return supabase;
+}
