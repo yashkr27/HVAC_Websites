@@ -212,13 +212,24 @@
   transform: translateY(-1px);
 }
 
+.hvac-chat-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .hvac-chat-message-row {
   display: flex;
   margin-top: 14px;
+  animation: hvac-chat-fade-in 280ms ease both;
 }
 
 .hvac-chat-message-row.is-user {
   justify-content: flex-end;
+}
+
+.hvac-chat-message-row.is-bot {
+  justify-content: flex-start;
 }
 
 .hvac-chat-bubble {
@@ -242,6 +253,165 @@
   border-top-right-radius: 8px;
 }
 
+/* Source tag under bot messages */
+.hvac-chat-source-tag {
+  display: inline-block;
+  margin-top: 4px;
+  margin-left: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: #f0f0f1;
+  color: #71717a;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Typing indicator */
+.hvac-chat-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border-top-left-radius: 8px;
+  background: #f4f4f5;
+}
+
+.hvac-chat-typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #a1a1aa;
+  animation: hvac-typing-bounce 1.2s ease-in-out infinite;
+}
+
+.hvac-chat-typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.hvac-chat-typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes hvac-typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+@keyframes hvac-chat-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Lead capture form */
+.hvac-chat-lead-form {
+  width: 100%;
+  max-width: 280px;
+  padding: 16px;
+  border-radius: 18px;
+  border-top-left-radius: 8px;
+  background: #f4f4f5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hvac-chat-lead-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #18181b;
+}
+
+.hvac-chat-lead-input,
+.hvac-chat-lead-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  background: #fff;
+  color: #09090b;
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+
+.hvac-chat-lead-input:focus,
+.hvac-chat-lead-select:focus {
+  border-color: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.hvac-chat-lead-input::placeholder {
+  color: #a1a1aa;
+}
+
+.hvac-chat-lead-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.hvac-chat-lead-submit {
+  flex: 1;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #000;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.hvac-chat-lead-submit:hover {
+  background: #27272a;
+  transform: translateY(-1px);
+}
+
+.hvac-chat-lead-submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.hvac-chat-lead-cancel {
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  background: #fff;
+  color: #52525b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.hvac-chat-lead-cancel:hover {
+  background: #f4f4f5;
+  transform: translateY(-1px);
+}
+
+/* Input area */
 .hvac-chat-input-area {
   padding: 16px;
   border-top: 1px solid rgba(0, 0, 0, 0.07);
@@ -278,6 +448,10 @@
 
 .hvac-chat-input-shell input::placeholder {
   color: #71717a;
+}
+
+.hvac-chat-input-shell input:disabled {
+  opacity: 0.6;
 }
 
 .hvac-chat-send {
@@ -337,6 +511,10 @@
   .hvac-chat-greeting {
     font-size: 22px;
   }
+
+  .hvac-chat-lead-form {
+    max-width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -345,7 +523,10 @@
   .hvac-chat-window,
   .hvac-chat-close,
   .hvac-chat-action,
-  .hvac-chat-send {
+  .hvac-chat-send,
+  .hvac-chat-message-row,
+  .hvac-chat-typing-dot {
     transition: none;
+    animation: none;
   }
 }
