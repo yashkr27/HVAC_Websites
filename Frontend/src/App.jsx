@@ -95,6 +95,18 @@ function HeroSection() {
         .hero-container {
           height: calc(100vh - 24px);
         }
+        @media (min-width: 769px) and (max-width: 1100px) {
+          .hero-container {
+            height: calc(75vh - 24px);
+            min-height: 600px;
+          }
+          .hero-content {
+            padding-top: 110px !important;
+          }
+          .hero-marquee-wrapper {
+            margin-top: 64px !important;
+          }
+        }
         @media (max-width: 768px) {
           .hero-container {
             height: auto;
@@ -770,6 +782,9 @@ function HomePage() {
     >
       <style>{`
         .hero-wrapper { height: 100vh; }
+        @media (min-width: 769px) and (max-width: 1100px) {
+          .hero-wrapper { height: 75vh; }
+        }
         @media (max-width: 768px) {
           .hero-wrapper { height: auto; }
         }
