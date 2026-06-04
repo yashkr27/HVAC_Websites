@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { Menu, User, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoWebp from "../assets/logo.webp";
@@ -144,20 +144,26 @@ function UserDropdown({ session, signOut }) {
 
 export function Navbar() {
   const location = useLocation();
+  const isHomePage = location.pathname === "/";
   const { session, signOut } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <nav
+      className={`site-nav-container ${isHomePage ? "is-home" : ""}`}
       style={{
         position: "absolute",
         top: 0,
         left: 0,
         right: 0,
         zIndex: 20,
-        padding: "18px clamp(18px, 4vw, 56px)",
       }}
     >
       <style>{`
+        .site-nav-container { padding: 18px clamp(18px, 4vw, 56px); }
+        @media (max-width: 980px) {
+          .site-nav-container { padding: 18px 24px !important; }
+        }
         @media (max-width: 1040px) {
           .site-nav-links { gap: 14px !important; }
           .site-nav-link-item { font-size: 14px !important; }
@@ -166,13 +172,69 @@ export function Navbar() {
         }
         @media (max-width: 980px) {
           .site-nav-links { display: none !important; }
-          .site-navbar-inner { grid-template-columns: 1fr auto !important; }
+          .site-navbar-inner { grid-template-columns: auto 1fr auto !important; }
           .site-nav-cta { padding-left: 18px !important; padding-right: 18px !important; }
+          .mobile-menu-btn { display: flex !important; }
         }
         @media (max-width: 560px) {
-          .site-brand-name { font-size: 14px !important; max-width: 150px !important; }
+          .site-navbar-inner {
+            grid-template-columns: auto 1fr auto !important;
+            column-gap: 12px !important;
+            padding: 8px 12px !important;
+          }
+          .site-brand-name { 
+            font-size: 13px !important; 
+            max-width: 140px !important; 
+            white-space: normal !important; 
+            line-height: 1.1 !important;
+          }
           .site-nav-signin { display: none !important; }
-          .site-nav-cta { font-size: 13px !important; padding: 9px 16px !important; }
+          .site-nav-cta { display: none !important; }
+          .site-logo-img { height: 32px !important; }
+        }
+        @media (max-width: 768px) {
+          .home-mobile-space { display: none !important; }
+          .home-mobile-break { display: block !important; }
+          
+          .site-nav-container.is-home {
+            padding-top: 24px !important;
+          }
+          .site-nav-container.is-home .site-navbar-inner {
+            width: 88% !important;
+            margin: 0 auto !important;
+            padding: 10px 14px !important;
+            background: #fff !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1) !important;
+            border-radius: 9999px !important;
+            grid-template-columns: auto 1fr auto !important;
+            column-gap: 14px !important;
+          }
+          .site-nav-container.is-home .site-brand-name {
+            font-size: 15px !important;
+            line-height: 1.2 !important;
+            white-space: normal !important;
+            max-width: none !important;
+            font-weight: 800 !important;
+            overflow: visible !important;
+          }
+          .site-nav-container.is-home .site-logo-img {
+            height: 38px !important;
+          }
+        }
+        .mobile-menu-btn {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          border-radius: 9999px;
+          background: rgba(0,0,0,0.05);
+          border: none;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .mobile-menu-btn:active {
+          background: rgba(0,0,0,0.1);
         }
         .site-nav-link-item {
           font-size: 15px;
@@ -229,6 +291,7 @@ export function Navbar() {
           }}
         >
           <img
+            className="site-logo-img"
             src={logoWebp}
             alt="AAA Heating & Air Conditioning logo"
             style={{
@@ -251,7 +314,15 @@ export function Navbar() {
                 textOverflow: "ellipsis",
               }}
             >
-              AAA Heating & Air Conditioning
+              {isHomePage ? (
+                <>
+                  AAA Heating & Air
+                  <span className="home-mobile-space"> </span>
+                  <span className="home-mobile-break">Conditioning</span>
+                </>
+              ) : (
+                "AAA Heating & Air Conditioning"
+              )}
             </span>
           </span>
         </Link>
@@ -327,8 +398,94 @@ export function Navbar() {
               </Link>
             </>
           )}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X size={20} color="#000" /> : <Menu size={20} color="#000" />}
+          </button>
         </div>
       </div>
+
+      {mobileMenuOpen && (
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: "18px",
+            right: "18px",
+            background: "#fff",
+            borderRadius: "16px",
+            padding: "16px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px",
+            marginTop: "12px",
+            border: "1px solid rgba(0,0,0,0.08)",
+            zIndex: 100,
+          }}
+        >
+          {navLinks.map(([label, href]) => (
+            <Link
+              key={href}
+              to={href}
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#000",
+                textDecoration: "none",
+                padding: "12px 16px",
+                borderRadius: "8px",
+                background: location.pathname === href ? "rgba(0,0,0,0.05)" : "transparent",
+                fontFamily: "'TT Norms Pro', sans-serif",
+              }}
+            >
+              {label}
+            </Link>
+          ))}
+          {!session && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "8px", borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: "16px" }}>
+              <Link
+                to="/signin"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  textAlign: "center",
+                  padding: "12px",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  color: "#000",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  background: "rgba(0,0,0,0.05)",
+                  fontFamily: "'TT Norms Pro', sans-serif",
+                }}
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/contact#request-estimate"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  textAlign: "center",
+                  padding: "12px",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  color: "#fff",
+                  background: "#000",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  fontFamily: "'TT Norms Pro', sans-serif",
+                }}
+              >
+                Get Free Estimate
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 }

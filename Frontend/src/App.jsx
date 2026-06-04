@@ -40,6 +40,7 @@ function HeroMarquee() {
   const doubled = [...heroBrands, ...heroBrands];
   return (
     <div
+      className="hero-marquee-wrapper"
       style={{
         marginTop: "96px",
         width: "100%",
@@ -90,13 +91,39 @@ function HeroSection() {
         alignItems: "flex-end",
       }}
     >
+      <style>{`
+        .hero-container {
+          height: calc(100vh - 24px);
+        }
+        @media (max-width: 768px) {
+          .hero-container {
+            height: auto;
+            min-height: 500px;
+          }
+          .hero-content {
+            padding: 32px 24px !important;
+            padding-top: 100px !important;
+          }
+          .hero-title {
+            font-size: 38px !important;
+            margin-bottom: 12px !important;
+          }
+          .hero-desc {
+            font-size: 15px !important;
+            margin-bottom: 24px !important;
+          }
+          .hero-marquee-wrapper {
+            margin-top: 40px !important;
+          }
+        }
+      `}</style>
       <div
+        className="hero-container"
         style={{
           position: "relative",
           width: "100%",
           borderRadius: "20px",
           overflow: "hidden",
-          height: "calc(100vh - 24px)",
         }}
       >
         <img
@@ -121,6 +148,7 @@ function HeroSection() {
 
         {/* Content Overlay */}
         <div
+          className="hero-content"
           style={{
             position: "relative",
             zIndex: 10,
@@ -134,6 +162,7 @@ function HeroSection() {
           }}
         >
           <h1
+            className="hero-title"
             style={{
               color: "#000",
               fontSize: "clamp(48px, 5.5vw, 72px)",
@@ -151,6 +180,7 @@ function HeroSection() {
           </h1>
 
           <p
+            className="hero-desc"
             style={{
               color: "rgba(0,0,0,0.7)",
               fontSize: "clamp(15px, 1.5vw, 19px)",
@@ -215,11 +245,17 @@ function HeroSection() {
 function InfoSection() {
   return (
     <section
+      className="info-section-wrapper"
       style={{
         background: "#F5F5F5",
         padding: "96px 24px",
       }}
     >
+      <style>{`
+        @media (max-width: 768px) {
+          .info-section-wrapper { padding: 48px 24px !important; }
+        }
+      `}</style>
       <div style={{ maxWidth: "88rem", margin: "0 auto" }}>
         {/* Row 1 */}
         <div
@@ -316,6 +352,7 @@ function InfoSection() {
             }
             @media (max-width: 640px) {
               .info-cards-grid { grid-template-columns: 1fr !important; }
+              .info-card { min-height: 220px !important; padding: 24px !important; }
             }
             .card-1-lg { grid-column: span 2; }
             @media (max-width: 1024px) {
@@ -325,7 +362,7 @@ function InfoSection() {
 
           {/* Card 1 — spans 2 cols on lg */}
           <div
-            className="card-1-lg"
+            className="card-1-lg info-card"
             style={{
               borderRadius: "16px",
               backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.68)), url('${hvacImages.maintenance}')`,
@@ -366,6 +403,7 @@ function InfoSection() {
 
           {/* Card 2 */}
           <div
+            className="info-card"
             style={{
               backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.7)), url('${hvacImages.heating}')`,
               backgroundSize: "cover",
@@ -406,6 +444,7 @@ function InfoSection() {
 
           {/* Card 3 */}
           <div
+            className="info-card"
             style={{
               backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.7)), url('${hvacImages.cooling}')`,
               backgroundSize: "cover",
@@ -464,8 +503,11 @@ const backerBrands = [
 function BackedBySection() {
   const doubled = [...backerBrands, ...backerBrands];
   return (
-    <section style={{ background: "#F5F5F5", padding: "64px 24px" }}>
+    <section className="backed-by-section" style={{ background: "#F5F5F5", padding: "64px 24px" }}>
       <style>{`
+        @media (max-width: 768px) {
+          .backed-by-section { padding: 40px 24px !important; }
+        }
         @keyframes backers-marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -533,7 +575,15 @@ function BackedBySection() {
 // ─── Use Cases Section ────────────────────────────────────────────────────────
 function UseCasesSection() {
   return (
-    <section style={{ background: "#F5F5F5", padding: "96px 24px" }}>
+    <section className="use-cases-section" style={{ background: "#F5F5F5", padding: "96px 24px" }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .use-cases-section { padding: 48px 24px !important; }
+          .use-case-card { min-height: 420px !important; padding: 32px !important; }
+          .use-case-title { font-size: 36px !important; margin-bottom: 16px !important; }
+          .use-case-overlay-content { padding: 32px !important; }
+        }
+      `}</style>
       <div
         style={{
           maxWidth: "88rem",
@@ -546,6 +596,7 @@ function UseCasesSection() {
       >
         {/* Left Column */}
         <div
+          className="use-case-card"
           style={{
             backgroundImage: `linear-gradient(180deg, rgba(245,245,245,0.9), rgba(245,245,245,0.66) 44%, rgba(0,0,0,0.16)), url('${hvacImages.maintenance}')`,
             backgroundSize: "cover",
@@ -569,6 +620,7 @@ function UseCasesSection() {
             HVAC Solutions
           </p>
           <h2
+            className="use-case-title"
             style={{
               color: "#000",
               fontSize: "clamp(44px, 5vw, 60px)",
@@ -597,6 +649,7 @@ function UseCasesSection() {
 
         {/* Right Column — Video Card */}
         <div
+          className="use-case-card"
           style={{
             position: "relative",
             borderRadius: "24px",
@@ -626,6 +679,7 @@ function UseCasesSection() {
 
           {/* Overlay Content */}
           <div
+            className="use-case-overlay-content"
             style={{
               position: "relative",
               zIndex: 10,
@@ -714,10 +768,16 @@ function HomePage() {
         fontFamily: "'TT Norms Pro', sans-serif",
       }}
     >
+      <style>{`
+        .hero-wrapper { height: 100vh; }
+        @media (max-width: 768px) {
+          .hero-wrapper { height: auto; }
+        }
+      `}</style>
       {/* Hero wrapper — full viewport height */}
       <div
+        className="hero-wrapper"
         style={{
-          height: "100vh",
           display: "flex",
           flexDirection: "column",
           position: "relative",

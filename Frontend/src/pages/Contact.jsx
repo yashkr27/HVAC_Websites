@@ -18,19 +18,27 @@ const inputStyle = {
   transition: "border-color 0.2s",
 };
 
-function FormInput({ type = "text", name, placeholder, label, style = {}, value, onChange }) {
+function FormInput({ type = "text", name, placeholder, label, style = {}, value, onChange, error }) {
+  const [focused, setFocused] = useState(false);
   return (
-    <input
-      style={{ ...inputStyle, ...style }}
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      aria-label={label || placeholder}
-      value={value}
-      onChange={onChange}
-      onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)")}
-      onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)")}
-    />
+    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+      <input
+        style={{
+          ...inputStyle,
+          borderColor: error ? "#c0392b" : focused ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.12)",
+          ...style,
+        }}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        aria-label={label || placeholder}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+      />
+      {error && <span style={{ color: "#c0392b", fontSize: "12px", marginLeft: "4px" }}>{error}</span>}
+    </div>
   );
 }
 
@@ -39,6 +47,7 @@ function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const [form, setForm] = useState({
     name: "", email: "", phone: "", service: "", urgency: "", message: "",
   });
@@ -50,6 +59,48 @@ function ContactForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+    setFieldErrors({});
+
+    let hasError = false;
+    let newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Name is required.";
+      hasError = true;
+    }
+    
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required.";
+      hasError = true;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      newErrors.email = "Please enter a valid email address.";
+      hasError = true;
+    }
+    
+    if (!form.phone.trim()) {
+      newErrors.phone = "Phone number is required.";
+      hasError = true;
+    } else if (!/^\+?[\d\s\-\(\)]{7,20}$/.test(form.phone.trim())) {
+      newErrors.phone = "Please enter a valid phone number.";
+      hasError = true;
+    }
+
+    if (!form.service.trim()) {
+      newErrors.service = "Please specify a service.";
+      hasError = true;
+    }
+
+    if (!form.urgency) {
+      newErrors.urgency = "Please select an urgency level.";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setFieldErrors(newErrors);
+      setError("Please fill out all required fields before submitting.");
+      return;
+    }
+
     setLoading(true);
 
     const urgencyMap = {
@@ -106,7 +157,12 @@ function ContactForm() {
           to confirm your appointment.
         </p>
         <button
-          onClick={() => { setSubmitted(false); setForm({ name: "", email: "", phone: "", service: "", urgency: "", message: "" }); }}
+          onClick={() => { 
+            setSubmitted(false); 
+            setForm({ name: "", email: "", phone: "", service: "", urgency: "", message: "" });
+            setFieldErrors({});
+            setError("");
+          }}
           style={{
             background: "none",
             border: "1px solid rgba(0,0,0,0.2)",
@@ -138,26 +194,33 @@ function ContactForm() {
           marginBottom: "14px",
         }}
       >
-        <FormInput name="name" placeholder="Full Name" value={form.name} onChange={handleChange("name")} />
-        <FormInput type="email" name="email" placeholder="Email Address" value={form.email} onChange={handleChange("email")} />
-        <FormInput type="tel" name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange("phone")} />
-        <FormInput name="service" placeholder="Service Needed" value={form.service} onChange={handleChange("service")} />
+        <FormInput name="name" placeholder="Full Name" value={form.name} onChange={handleChange("name")} error={fieldErrors.name} />
+        <FormInput type="email" name="email" placeholder="Email Address" value={form.email} onChange={handleChange("email")} error={fieldErrors.email} />
+        <FormInput type="tel" name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange("phone")} error={fieldErrors.phone} />
+        <FormInput name="service" placeholder="Service Needed" value={form.service} onChange={handleChange("service")} error={fieldErrors.service} />
       </div>
-      <select
-        name="urgency"
-        aria-label="Urgency Level"
-        value={form.urgency}
-        onChange={handleChange("urgency")}
-        style={{ ...inputStyle, marginBottom: "14px", cursor: "pointer" }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)")}
-        onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)")}
-      >
-        <option value="">Urgency Level</option>
-        <option value="emergency">Emergency — ASAP</option>
-        <option value="today">Today if Possible</option>
-        <option value="scheduled">Scheduled Appointment</option>
-        <option value="estimate">Just Getting an Estimate</option>
-      </select>
+      <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginBottom: "14px" }}>
+        <select
+          name="urgency"
+          aria-label="Urgency Level"
+          value={form.urgency}
+          onChange={handleChange("urgency")}
+          style={{
+            ...inputStyle,
+            borderColor: fieldErrors.urgency ? "#c0392b" : "rgba(0,0,0,0.12)",
+            cursor: "pointer",
+          }}
+          onFocus={(e) => { if (!fieldErrors.urgency) e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)" }}
+          onBlur={(e) => { if (!fieldErrors.urgency) e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)" }}
+        >
+          <option value="">Urgency Level</option>
+          <option value="emergency">Emergency — ASAP</option>
+          <option value="today">Today if Possible</option>
+          <option value="scheduled">Scheduled Appointment</option>
+          <option value="estimate">Just Getting an Estimate</option>
+        </select>
+        {fieldErrors.urgency && <span style={{ color: "#c0392b", fontSize: "12px", marginLeft: "4px" }}>{fieldErrors.urgency}</span>}
+      </div>
       <textarea
         style={{ ...inputStyle, minHeight: "140px", resize: "vertical" }}
         name="message"
