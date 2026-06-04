@@ -6,6 +6,7 @@ import { pageStyles } from "../components/siteData.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const inputStyle = {
+  boxSizing: "border-box",
   width: "100%",
   border: "1.5px solid rgba(0,0,0,0.12)",
   borderRadius: "12px",
@@ -91,6 +92,7 @@ export default function SignIn() {
       {/* Left — Form Panel */}
       <div
         style={{
+          boxSizing: "border-box",
           flex: "0 0 auto",
           width: "100%",
           maxWidth: "520px",

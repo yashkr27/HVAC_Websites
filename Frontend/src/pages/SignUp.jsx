@@ -228,7 +228,7 @@ export default function SignUp() {
           <img
             src={logoWebp}
             alt="AAA Heating & Air"
-            style={{ height: "36px", width: "auto", objectFit: "contain" }}
+            style={{ height: "52px", width: "auto", objectFit: "contain" }}
           />
         </Link>
 

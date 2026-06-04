@@ -159,16 +159,17 @@ export function Navbar() {
     >
       <style>{`
         @media (max-width: 1040px) {
-          .site-nav-links { gap: 18px !important; }
-          .site-brand-name { max-width: 190px !important; }
+          .site-nav-links { gap: 14px !important; }
+          .site-nav-link-item { font-size: 14px !important; }
+          .site-nav-cta { padding-left: 18px !important; padding-right: 18px !important; }
+          .site-brand-name { max-width: 230px !important; }
         }
-        @media (max-width: 900px) {
+        @media (max-width: 980px) {
           .site-nav-links { display: none !important; }
           .site-navbar-inner { grid-template-columns: 1fr auto !important; }
           .site-nav-cta { padding-left: 18px !important; padding-right: 18px !important; }
         }
         @media (max-width: 560px) {
-          .site-brand-subtitle { display: none !important; }
           .site-brand-name { font-size: 14px !important; max-width: 150px !important; }
           .site-nav-signin { display: none !important; }
           .site-nav-cta { font-size: 13px !important; padding: 9px 16px !important; }
@@ -201,12 +202,12 @@ export function Navbar() {
         className="site-navbar-inner"
         style={{
           display: "grid",
-          gridTemplateColumns: "minmax(260px, 1fr) auto minmax(220px, 1fr)",
+          gridTemplateColumns: "minmax(292px, max-content) minmax(0, 1fr) auto",
           alignItems: "center",
           width: "100%",
           maxWidth: "min(100rem, calc(100vw - 36px))",
           margin: "0 auto",
-          gap: "18px",
+          columnGap: "24px",
           borderRadius: "9999px",
           background: "rgba(255,255,255,0.82)",
           border: "1px solid rgba(0,0,0,0.08)",
@@ -252,18 +253,6 @@ export function Navbar() {
             >
               AAA Heating & Air Conditioning
             </span>
-            <span
-              className="site-brand-subtitle"
-              style={{
-                color: "#52525B",
-                fontSize: "12px",
-                fontWeight: 600,
-                marginTop: "3px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Chicagoland HVAC Experts
-            </span>
           </span>
         </Link>
 
@@ -273,6 +262,8 @@ export function Navbar() {
             display: "flex",
             gap: "28px",
             alignItems: "center",
+            justifyContent: "center",
+            minWidth: 0,
           }}
         >
           {navLinks.map(([label, href]) => (

@@ -73,7 +73,9 @@ export function Footer() {
                 height: "38px",
                 width: "auto",
                 objectFit: "contain",
-                filter: "brightness(0) invert(1)",
+                background: "#fff",
+                borderRadius: "10px",
+                padding: "4px",
               }}
             />
             <div style={{ lineHeight: 1.12 }}>
