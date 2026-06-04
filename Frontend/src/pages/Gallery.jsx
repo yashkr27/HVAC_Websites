@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageShell } from "../components/SiteChrome.jsx";
 import { pageStyles } from "../components/siteData.js";
 import { supabase } from "../lib/supabase";
-import { useEffect } from "react";
 
 const staticGalleryImages = [
   {
@@ -41,7 +40,7 @@ const staticGalleryImages = [
     tall: false,
   },
   {
-    src: "https://images.pexels.com/photos/8961098/pexels-photo-8961098.jpeg?auto=compress&cs=tinysrgb&w=900",
+    src: "https://images.pexels.com/photos/6195122/pexels-photo-6195122.jpeg?auto=compress&cs=tinysrgb&w=900",
     alt: "Ductwork installation",
     category: "Residential",
     label: "Ductwork Installation",
@@ -74,11 +73,12 @@ const categories = ["All", "Residential", "Commercial", "Maintenance", "Heating"
 
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [hoveredIndex, setHoveredIndex] = useState(null);
   const [galleryImages, setGalleryImages] = useState(staticGalleryImages);
 
   useEffect(() => {
     async function fetchGallery() {
+      if (!supabase) return;
+
       const { data } = await supabase
         .from("gallery")
         .select("*")
@@ -141,7 +141,7 @@ export default function Gallery() {
                 onClick={() => setActiveCategory(cat)}
                 style={{
                   background: activeCategory === cat ? "#000" : "transparent",
-                  color: activeCategory === cat ? "#fff" : "rgba(0,0,0,0.55)",
+                  color: activeCategory === cat ? "#fff" : "#27272A",
                   border: activeCategory === cat ? "1.5px solid #000" : "1.5px solid rgba(0,0,0,0.18)",
                   borderRadius: "9999px",
                   padding: "8px 20px",
@@ -161,7 +161,7 @@ export default function Gallery() {
                 onMouseLeave={(e) => {
                   if (activeCategory !== cat) {
                     e.currentTarget.style.borderColor = "rgba(0,0,0,0.18)";
-                    e.currentTarget.style.color = "rgba(0,0,0,0.55)";
+                    e.currentTarget.style.color = "#27272A";
                   }
                 }}
               >
@@ -223,8 +223,6 @@ export default function Gallery() {
             <div
               key={`${img.label}-${i}`}
               className="gallery-item"
-              onMouseEnter={() => setHoveredIndex(i)}
-              onMouseLeave={() => setHoveredIndex(null)}
             >
               <img
                 src={img.src}

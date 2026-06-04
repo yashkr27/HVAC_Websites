@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ButtonLink, PageHero, PageShell } from "../components/SiteChrome.jsx";
 import { hvacImages, pageStyles } from "../components/siteData.js";
 import { useAuth } from "../context/AuthContext.jsx";
-import { supabase } from "../lib/supabase";
+import { missingSupabaseMessage, supabase } from "../lib/supabase";
 
 const inputStyle = {
   width: "100%",
@@ -58,6 +58,12 @@ function ContactForm() {
       scheduled: "this_week",
       estimate: "just_browsing",
     };
+
+    if (!supabase) {
+      setLoading(false);
+      setError(missingSupabaseMessage);
+      return;
+    }
 
     const { error: insertError } = await supabase.from("estimates").insert({
       user_id: session?.user?.id ?? null,
@@ -255,9 +261,9 @@ export default function Contact() {
                     {href ? (
                       <a
                         href={href}
-                        style={{ ...pageStyles.body, textDecoration: "none", color: "rgba(0,0,0,0.68)" }}
+                        style={{ ...pageStyles.body, textDecoration: "none", color: "#27272A" }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0,0,0,0.68)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = "#27272A")}
                       >
                         {value}
                       </a>

@@ -89,7 +89,7 @@ export default function Services() {
       />
 
       {/* Stats Strip */}
-      <section style={{ background: "#fff", padding: "0 24px" }}>
+      <section style={{ background: "#fff", padding: "0 clamp(20px, 4vw, 64px)" }}>
         <div
           style={{
             ...pageStyles.container,
@@ -124,7 +124,7 @@ export default function Services() {
               >
                 {value}
               </p>
-              <p style={{ color: "rgba(0,0,0,0.58)", fontSize: "14px", margin: 0 }}>
+              <p style={{ color: "#3F3F46", fontSize: "14px", fontWeight: 600, margin: 0 }}>
                 {label}
               </p>
             </div>
@@ -170,6 +170,7 @@ export default function Services() {
               style={{
                 ...pageStyles.card,
                 minHeight: "220px",
+                color: "#111111",
                 display: "flex",
                 flexDirection: "column",
                 transition: "transform 0.2s, box-shadow 0.2s",
@@ -192,8 +193,8 @@ export default function Services() {
                     fontWeight: 600,
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "rgba(0,0,0,0.45)",
-                    background: "rgba(0,0,0,0.05)",
+                    color: "#27272A",
+                    background: "rgba(0,0,0,0.08)",
                     padding: "4px 10px",
                     borderRadius: "9999px",
                   }}
@@ -201,10 +202,10 @@ export default function Services() {
                   {tag}
                 </span>
               </div>
-              <h2 style={{ fontSize: "22px", lineHeight: 1.2, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
+              <h2 style={{ color: "#09090B", fontSize: "22px", fontWeight: 700, lineHeight: 1.2, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
                 {title}
               </h2>
-              <p style={{ ...pageStyles.body, flex: 1 }}>{description}</p>
+              <p style={{ ...pageStyles.body, color: "#27272A", flex: 1 }}>{description}</p>
               <Link
                 to="/contact"
                 aria-label={`Request ${title}`}

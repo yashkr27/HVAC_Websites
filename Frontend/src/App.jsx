@@ -1,6 +1,5 @@
 import { ArrowRight } from "lucide-react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import logoWebp from "./assets/logo.webp";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import Gallery from "./pages/Gallery.jsx";
@@ -10,7 +9,8 @@ import Services from "./pages/Services.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import VerifyOTP from "./pages/VerifyOTP.jsx";
-import { Footer, Navbar } from "./components/SiteChrome.jsx";
+import { Navbar } from "./components/Navbar.jsx";
+import { Footer } from "./components/SiteChrome.jsx";
 
 const hvacImages = {
   hero:

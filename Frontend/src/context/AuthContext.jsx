@@ -1,13 +1,27 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { getSupabaseClient, isSupabaseConfigured, missingSupabaseMessage, supabase } from "../lib/supabase";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState(undefined); // undefined = loading
+  const [session, setSession] = useState(isSupabaseConfigured ? undefined : null); // undefined = loading
   const [profile, setProfile] = useState(null);
 
+  const fetchProfile = useCallback(async (userId) => {
+    if (!supabase) return;
+
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+    setProfile(data);
+  }, []);
+
   useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) return undefined;
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -27,25 +41,22 @@ export function AuthProvider({ children }) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
-
-  async function fetchProfile(userId) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
-    setProfile(data);
-  }
+  }, [fetchProfile]);
 
   async function signIn(email, password) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!isSupabaseConfigured) return { error: new Error(missingSupabaseMessage) };
+
+    const client = getSupabaseClient();
+    const { error } = await client.auth.signInWithPassword({ email, password });
     return { error };
   }
 
   async function signUp(email, password, meta) {
+    if (!isSupabaseConfigured) return { error: new Error(missingSupabaseMessage) };
+
     // meta: { first_name, last_name, phone }
-    const { error } = await supabase.auth.signUp({
+    const client = getSupabaseClient();
+    const { error } = await client.auth.signUp({
       email,
       password,
       options: { data: meta },
@@ -58,11 +69,17 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
-    await supabase.auth.signOut();
+    if (!isSupabaseConfigured) return;
+
+    const client = getSupabaseClient();
+    await client.auth.signOut();
   }
 
   async function verifyOtp(email, token) {
-    const { error } = await supabase.auth.verifyOtp({
+    if (!isSupabaseConfigured) return { error: new Error(missingSupabaseMessage) };
+
+    const client = getSupabaseClient();
+    const { error } = await client.auth.verifyOtp({
       email,
       token,
       type: 'signup',
