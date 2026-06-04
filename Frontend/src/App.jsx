@@ -8,7 +8,7 @@ import ServiceAreas from "./pages/ServiceAreas.jsx";
 import Services from "./pages/Services.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
-import VerifyOTP from "./pages/VerifyOTP.jsx";
+import ChatbotWidget from "./components/ChatbotWidget.jsx";
 import { Navbar } from "./components/Navbar.jsx";
 import { Footer } from "./components/SiteChrome.jsx";
 
@@ -740,8 +740,8 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/verify-otp" element={<VerifyOTP />} />
       </Routes>
+      <ChatbotWidget />
     </BrowserRouter>
   );
 }

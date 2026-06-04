@@ -89,7 +89,7 @@ export default function Services() {
       />
 
       {/* Stats Strip */}
-      <section style={{ background: "#fff", padding: "0 clamp(20px, 4vw, 64px)" }}>
+      <section style={{ background: "#fff", padding: "48px clamp(16px, 4vw, 64px) 0" }}>
         <div
           style={{
             ...pageStyles.container,
@@ -97,7 +97,6 @@ export default function Services() {
             gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
             borderRadius: "16px",
             overflow: "hidden",
-            transform: "translateY(-32px)",
             boxShadow: "0 24px 64px rgba(0,0,0,0.07)",
           }}
         >
@@ -133,7 +132,7 @@ export default function Services() {
       </section>
 
       {/* Intro */}
-      <section className="responsive-section" style={{ ...pageStyles.section, paddingTop: "24px" }}>
+      <section className="responsive-section" style={{ ...pageStyles.section, paddingTop: "72px" }}>
         <div
           style={{
             ...pageStyles.container,
@@ -159,8 +158,8 @@ export default function Services() {
           style={{
             ...pageStyles.container,
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "16px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+            gap: "20px",
             textAlign: "left",
           }}
         >
@@ -173,6 +172,8 @@ export default function Services() {
                 color: "#111111",
                 display: "flex",
                 flexDirection: "column",
+                boxSizing: "border-box",
+                minWidth: 0,
                 transition: "transform 0.2s, box-shadow 0.2s",
                 cursor: "default",
               }}
@@ -185,8 +186,17 @@ export default function Services() {
                 e.currentTarget.style.boxShadow = "0 18px 48px rgba(0,0,0,0.05)";
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
-                <Icon size={28} color="#000" />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "14px",
+                  marginBottom: "20px",
+                  minWidth: 0,
+                }}
+              >
+                <Icon size={28} color="#000" style={{ flexShrink: 0 }} />
                 <span
                   style={{
                     fontSize: "11px",
@@ -197,6 +207,10 @@ export default function Services() {
                     background: "rgba(0,0,0,0.08)",
                     padding: "4px 10px",
                     borderRadius: "9999px",
+                    maxWidth: "calc(100% - 42px)",
+                    overflowWrap: "anywhere",
+                    textAlign: "right",
+                    lineHeight: 1.2,
                   }}
                 >
                   {tag}

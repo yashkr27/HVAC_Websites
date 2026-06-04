@@ -59,7 +59,7 @@ Supabase strictly separates application data from authentication data for securi
 
 ### Email Confirmations & OTP Flow
 - **Confirmations Required:** By default, new accounts must confirm their email before they can sign in.
-- **OTP Verification:** After signing up on the frontend, users are redirected to `/verify-otp` to input a 6-digit code sent to their email.
+- **Account Signup:** After signing up on the frontend, users are redirected to sign in.
 - **Rate Limiting:** Supabase imposes a rate limit (e.g., ~3 emails per hour) for sending OTPs to the exact same email address. If you see an `"email rate limit exceeded"` error during testing, use **email aliases** (e.g., `yourname+1@gmail.com`, `yourname+2@gmail.com`). Supabase treats these as unique addresses, bypassing the rate limit, but all emails will still route to your main inbox.
 
 ---

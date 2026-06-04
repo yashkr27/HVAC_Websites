@@ -139,7 +139,7 @@ export default function SignUp() {
     if (signUpError) {
       setError(signUpError.message || "Failed to create account. Please try again.");
     } else {
-      navigate("/verify-otp", { state: { email: form.email } });
+      navigate("/signin");
     }
   }
 

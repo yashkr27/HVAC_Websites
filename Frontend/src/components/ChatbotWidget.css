@@ -1,0 +1,345 @@
+.hvac-chatbot {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
+  font-family: "TT Norms Pro", Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #09090b;
+}
+
+.hvac-chat-launcher {
+  width: 64px;
+  height: 64px;
+  border: 0;
+  border-radius: 9999px;
+  background: #000;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.24), 0 8px 18px rgba(0, 0, 0, 0.14);
+  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+}
+
+.hvac-chat-launcher:hover {
+  transform: scale(1.05);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28), 0 12px 24px rgba(0, 0, 0, 0.18);
+}
+
+.hvac-chat-launcher:focus-visible,
+.hvac-chat-close:focus-visible,
+.hvac-chat-action:focus-visible,
+.hvac-chat-send:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 3px;
+}
+
+.hvac-chat-tooltip {
+  position: absolute;
+  right: 0;
+  bottom: 82px;
+  width: 260px;
+  padding: 14px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 16px;
+  background: #fff;
+  color: #18181b;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.14);
+  font-size: 14px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.hvac-chat-tooltip.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hvac-chat-window {
+  position: absolute;
+  right: 0;
+  bottom: 84px;
+  width: 380px;
+  height: min(600px, 75vh);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.22), 0 12px 28px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(14px) scale(0.98);
+  transform-origin: bottom right;
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.hvac-chat-window.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.hvac-chat-header {
+  height: 72px;
+  padding: 0 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.hvac-chat-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.hvac-chat-logo {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hvac-chat-logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.hvac-chat-brand strong {
+  display: block;
+  color: #09090b;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.hvac-chat-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #52525b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.hvac-chat-status span {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: #16a34a;
+}
+
+.hvac-chat-close {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 9999px;
+  background: #f4f4f5;
+  color: #18181b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.hvac-chat-close:hover {
+  background: #e4e4e7;
+  transform: scale(1.03);
+}
+
+.hvac-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 20px 18px;
+  background: #fff;
+}
+
+.hvac-chat-welcome {
+  margin-bottom: 24px;
+}
+
+.hvac-chat-greeting {
+  margin: 0 0 18px;
+  color: #09090b;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.hvac-chat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.hvac-chat-action {
+  border: 1px solid #18181b;
+  border-radius: 9999px;
+  background: #fff;
+  color: #111;
+  padding: 9px 13px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.hvac-chat-action:hover {
+  background: #000;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.hvac-chat-message-row {
+  display: flex;
+  margin-top: 14px;
+}
+
+.hvac-chat-message-row.is-user {
+  justify-content: flex-end;
+}
+
+.hvac-chat-bubble {
+  max-width: 82%;
+  margin: 0;
+  padding: 13px 15px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.hvac-chat-bubble-bot {
+  background: #f4f4f5;
+  color: #27272a;
+  border-top-left-radius: 8px;
+}
+
+.hvac-chat-bubble-user {
+  background: #000;
+  color: #fff;
+  border-top-right-radius: 8px;
+}
+
+.hvac-chat-input-area {
+  padding: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.hvac-chat-input-shell {
+  min-height: 48px;
+  padding: 5px 5px 5px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hvac-chat-input-shell:focus-within {
+  border-color: rgba(0, 0, 0, 0.44);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
+}
+
+.hvac-chat-input-shell input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #09090b;
+  font: inherit;
+  font-size: 14px;
+}
+
+.hvac-chat-input-shell input::placeholder {
+  color: #71717a;
+}
+
+.hvac-chat-send {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 9999px;
+  background: #000;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease;
+}
+
+.hvac-chat-send:hover {
+  background: #27272a;
+  transform: scale(1.03);
+}
+
+@media (max-width: 900px) {
+  .hvac-chat-window {
+    width: 340px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hvac-chatbot {
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .hvac-chat-window {
+    position: fixed;
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(88px + env(safe-area-inset-bottom));
+    width: auto;
+    height: min(600px, calc(100svh - 112px - env(safe-area-inset-bottom)));
+    max-height: none;
+    border-radius: 22px;
+  }
+
+  .hvac-chat-tooltip {
+    right: 0;
+    width: min(280px, calc(100vw - 32px));
+  }
+
+  .hvac-chat-greeting {
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hvac-chat-launcher,
+  .hvac-chat-tooltip,
+  .hvac-chat-window,
+  .hvac-chat-close,
+  .hvac-chat-action,
+  .hvac-chat-send {
+    transition: none;
+  }
+}

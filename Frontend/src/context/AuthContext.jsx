@@ -75,22 +75,10 @@ export function AuthProvider({ children }) {
     await client.auth.signOut();
   }
 
-  async function verifyOtp(email, token) {
-    if (!isSupabaseConfigured) return { error: new Error(missingSupabaseMessage) };
-
-    const client = getSupabaseClient();
-    const { error } = await client.auth.verifyOtp({
-      email,
-      token,
-      type: 'signup',
-    });
-    return { error };
-  }
-
   const loading = session === undefined;
 
   return (
-    <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, verifyOtp }}>
+    <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
