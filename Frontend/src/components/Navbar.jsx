@@ -209,13 +209,8 @@ export function Navbar() {
             grid-template-columns: auto 1fr auto !important;
             column-gap: 14px !important;
           }
-          .site-nav-container.is-home .site-brand-name {
-            font-size: 15px !important;
-            line-height: 1.2 !important;
-            white-space: normal !important;
-            max-width: none !important;
-            font-weight: 800 !important;
-            overflow: visible !important;
+          .site-nav-container.is-home .site-brand-wrapper {
+            display: none !important;
           }
           .site-nav-container.is-home .site-logo-img {
             height: 38px !important;
@@ -301,7 +296,7 @@ export function Navbar() {
               flexShrink: 0,
             }}
           />
-          <span style={{ display: "flex", flexDirection: "column", minWidth: 0, lineHeight: 1.1 }}>
+          <span className="site-brand-wrapper" style={{ display: "flex", flexDirection: "column", minWidth: 0, lineHeight: 1.1 }}>
             <span
               className="site-brand-name"
               style={{
