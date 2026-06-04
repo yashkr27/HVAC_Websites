@@ -99,6 +99,8 @@ export default function Reviews() {
 
   useEffect(() => {
     async function fetchReviews() {
+      if (!supabase) return;
+
       const { data } = await supabase
         .from("reviews")
         .select("*, profiles(first_name, last_name)")
@@ -161,7 +163,7 @@ export default function Reviews() {
             textAlign: "left",
           }}
         >
-          {reviews.map(({ name, initials, category, text, location }, idx) => (
+          {reviews.map(({ name, initials, category, text, location }) => (
             <article
               key={`${name}-${category}`}
               style={{

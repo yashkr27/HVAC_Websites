@@ -50,7 +50,7 @@ export default function VerifyOTP() {
       } else {
         navigate("/");
       }
-    } catch (err) {
+    } catch {
       setError("Failed to verify code. Please try again.");
     } finally {
       setLoading(false);

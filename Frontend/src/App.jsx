@@ -1,6 +1,5 @@
 import { ArrowRight } from "lucide-react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import logoWebp from "./assets/logo.webp";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import Gallery from "./pages/Gallery.jsx";
