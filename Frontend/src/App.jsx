@@ -42,7 +42,7 @@ function HeroMarquee() {
     <div
       className="hero-marquee-wrapper"
       style={{
-        marginTop: "96px",
+        marginTop: "48px",
         width: "100%",
         maxWidth: "32rem",
         overflow: "hidden",
@@ -93,18 +93,18 @@ function HeroSection() {
     >
       <style>{`
         .hero-container {
-          height: calc(100vh - 24px);
+          height: min(78vh, 680px);
         }
         @media (min-width: 769px) and (max-width: 1100px) {
           .hero-container {
-            height: calc(75vh - 24px);
-            min-height: 600px;
+            height: min(68vh, 580px);
+            min-height: 520px;
           }
           .hero-content {
             padding-top: 110px !important;
           }
           .hero-marquee-wrapper {
-            margin-top: 64px !important;
+            margin-top: 48px !important;
           }
         }
         @media (max-width: 768px) {
@@ -781,9 +781,9 @@ function HomePage() {
       }}
     >
       <style>{`
-        .hero-wrapper { height: 100vh; }
+        .hero-wrapper { height: min(78vh, 680px); }
         @media (min-width: 769px) and (max-width: 1100px) {
-          .hero-wrapper { height: 75vh; }
+          .hero-wrapper { height: min(68vh, 580px); }
         }
         @media (max-width: 768px) {
           .hero-wrapper { height: auto; }
