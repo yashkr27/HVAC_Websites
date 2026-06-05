@@ -80,7 +80,7 @@ export default function About() {
       </section>
 
       {/* Milestones Strip */}
-      <section style={{ background: "#fff", padding: "0 24px 80px" }}>
+      <section style={{ background: "#fff", padding: "0 24px 56px" }}>
         <div
           style={{
             ...pageStyles.container,
@@ -121,7 +121,7 @@ export default function About() {
       </section>
 
       {/* Feature Cards */}
-      <section className="responsive-section" style={{ padding: "0 24px 80px" }}>
+      <section className="responsive-section" style={{ padding: "0 24px 56px" }}>
         <div
           style={{
             ...pageStyles.container,
@@ -158,7 +158,7 @@ export default function About() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="responsive-section" style={{ padding: "0 24px 80px" }}>
+      <section className="responsive-section" style={{ padding: "0 24px 56px" }}>
         <div
           style={{
             ...pageStyles.container,

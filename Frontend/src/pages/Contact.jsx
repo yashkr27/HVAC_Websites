@@ -381,7 +381,7 @@ export default function Contact() {
       </section>
 
       {/* Emergency Banner */}
-      <section style={{ padding: "0 24px 96px" }}>
+      <section style={{ padding: "0 24px 64px" }}>
         <div
           style={{
             ...pageStyles.container,

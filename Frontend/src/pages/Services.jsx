@@ -89,7 +89,7 @@ export default function Services() {
       />
 
       {/* Stats Strip */}
-      <section style={{ background: "#fff", padding: "48px clamp(16px, 4vw, 64px) 0" }}>
+      <section style={{ background: "#fff", padding: "32px clamp(16px, 4vw, 64px) 0" }}>
         <div
           style={{
             ...pageStyles.container,
@@ -132,7 +132,7 @@ export default function Services() {
       </section>
 
       {/* Intro */}
-      <section className="responsive-section" style={{ ...pageStyles.section, paddingTop: "72px" }}>
+      <section className="responsive-section" style={{ ...pageStyles.section, paddingTop: "48px" }}>
         <div
           style={{
             ...pageStyles.container,

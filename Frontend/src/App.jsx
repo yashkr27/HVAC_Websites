@@ -260,7 +260,7 @@ function InfoSection() {
       className="info-section-wrapper"
       style={{
         background: "#F5F5F5",
-        padding: "96px 24px",
+        padding: "64px 24px",
       }}
     >
       <style>{`
@@ -515,7 +515,7 @@ const backerBrands = [
 function BackedBySection() {
   const doubled = [...backerBrands, ...backerBrands];
   return (
-    <section className="backed-by-section" style={{ background: "#F5F5F5", padding: "64px 24px" }}>
+    <section className="backed-by-section" style={{ background: "#F5F5F5", padding: "48px 24px" }}>
       <style>{`
         @media (max-width: 768px) {
           .backed-by-section { padding: 40px 24px !important; }
@@ -587,11 +587,11 @@ function BackedBySection() {
 // ─── Use Cases Section ────────────────────────────────────────────────────────
 function UseCasesSection() {
   return (
-    <section className="use-cases-section" style={{ background: "#F5F5F5", padding: "96px 24px" }}>
+    <section className="use-cases-section" style={{ background: "#F5F5F5", padding: "64px 24px" }}>
       <style>{`
         @media (max-width: 768px) {
           .use-cases-section { padding: 48px 24px !important; }
-          .use-case-card { min-height: 420px !important; padding: 32px !important; }
+          .use-case-card { min-height: 360px !important; padding: 32px !important; }
           .use-case-title { font-size: 36px !important; margin-bottom: 16px !important; }
           .use-case-overlay-content { padding: 32px !important; }
         }
@@ -614,7 +614,7 @@ function UseCasesSection() {
             backgroundSize: "cover",
             backgroundPosition: "center",
             borderRadius: "24px",
-            minHeight: "720px",
+            minHeight: "480px",
             overflow: "hidden",
             padding: "48px",
           }}
@@ -666,7 +666,7 @@ function UseCasesSection() {
             position: "relative",
             borderRadius: "24px",
             overflow: "hidden",
-            minHeight: "720px",
+            minHeight: "480px",
           }}
         >
           <img

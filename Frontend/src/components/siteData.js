@@ -21,7 +21,7 @@ export const pageStyles = {
   },
   section: {
     width: "100%",
-    padding: "96px clamp(20px, 4vw, 64px)",
+    padding: "64px clamp(20px, 4vw, 64px)",
   },
   container: {
     width: "100%",

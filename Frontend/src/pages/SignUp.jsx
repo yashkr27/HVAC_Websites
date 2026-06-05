@@ -1,11 +1,12 @@
 import { CheckCircle, Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logoWebp from "../assets/logo.webp";
+import { PageShell } from "../components/SiteChrome.jsx";
 import { pageStyles } from "../components/siteData.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const inputStyle = {
+  boxSizing: "border-box",
   width: "100%",
   border: "1.5px solid rgba(0,0,0,0.12)",
   borderRadius: "12px",
@@ -144,184 +145,168 @@ export default function SignUp() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#F5F5F5",
-        display: "flex",
-        fontFamily: "'TT Norms Pro', sans-serif",
-      }}
-    >
-      {/* Left — Visual Panel */}
+    <PageShell>
+      <style>{`
+        @media (max-width: 768px) {
+          .auth-visual { display: none !important; }
+          .auth-form-panel { max-width: 100% !important; padding: 40px 28px !important; }
+        }
+      `}</style>
+
+      {/* Auth page body — split layout under the navbar */}
       <div
-        className="auth-visual"
         style={{
-          flex: 1,
-          backgroundImage:
-            "linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 100%), url('https://images.pexels.com/photos/34938442/pexels-photo-34938442.jpeg?auto=compress&cs=tinysrgb&w=1400')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "56px",
+          minHeight: "calc(100vh - 80px)",
+          background: "#F5F5F5",
+          paddingTop: "80px",
+          fontFamily: "'TT Norms Pro', sans-serif",
         }}
       >
-        <style>{`
-          @media (max-width: 768px) {
-            .auth-visual { display: none !important; }
-            .auth-panel { max-width: 100% !important; padding: 40px 28px !important; }
-          }
-        `}</style>
-        <p
+        {/* Left — Visual Panel */}
+        <div
+          className="auth-visual"
           style={{
-            fontSize: "12px",
-            fontWeight: 600,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.55)",
-            marginBottom: "24px",
+            flex: 1,
+            backgroundImage:
+              "linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 100%), url('https://images.pexels.com/photos/34938442/pexels-photo-34938442.jpeg?auto=compress&cs=tinysrgb&w=1400')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "56px",
           }}
         >
-          Customer Portal
-        </p>
-        <h2
-          style={{
-            color: "#fff",
-            fontSize: "clamp(28px, 3vw, 40px)",
-            fontWeight: 500,
-            lineHeight: 1.25,
-            letterSpacing: "-0.03em",
-            marginBottom: "36px",
-            fontFamily: "'TT Norms Pro', sans-serif",
-          }}
-        >
-          Manage your HVAC services in one place.
-        </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          {perks.map((perk) => (
-            <div key={perk} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <CheckCircle size={18} color="rgba(255,255,255,0.8)" style={{ flexShrink: 0 }} />
-              <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px" }}>{perk}</span>
-            </div>
-          ))}
+          <p
+            style={{
+              fontSize: "12px",
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.55)",
+              marginBottom: "24px",
+            }}
+          >
+            Customer Portal
+          </p>
+          <h2
+            style={{
+              color: "#fff",
+              fontSize: "clamp(28px, 3vw, 40px)",
+              fontWeight: 500,
+              lineHeight: 1.25,
+              letterSpacing: "-0.03em",
+              marginBottom: "36px",
+              fontFamily: "'TT Norms Pro', sans-serif",
+            }}
+          >
+            Manage your HVAC services in one place.
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {perks.map((perk) => (
+              <div key={perk} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <CheckCircle size={18} color="rgba(255,255,255,0.8)" style={{ flexShrink: 0 }} />
+                <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px" }}>{perk}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Right — Form Panel */}
-      <div
-        className="auth-panel"
-        style={{
-          flex: "0 0 auto",
-          width: "100%",
-          maxWidth: "540px",
-          background: "#fff",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "56px 48px",
-          overflowY: "auto",
-        }}
-      >
-        {/* Logo */}
-        <Link to="/" style={{ display: "inline-block", marginBottom: "40px" }}>
-          <img
-            src={logoWebp}
-            alt="AAA Heating & Air"
-            style={{ height: "52px", width: "auto", objectFit: "contain" }}
-          />
-        </Link>
+        {/* Right — Form Panel */}
+        <div
+          className="auth-form-panel"
+          style={{
+            flex: "0 0 auto",
+            width: "100%",
+            maxWidth: "540px",
+            background: "#fff",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "56px 48px",
+            overflowY: "auto",
+            boxSizing: "border-box",
+          }}
+        >
+          <p style={{ ...pageStyles.eyebrow, marginBottom: "10px" }}>Get started</p>
+          <h1
+            style={{
+              fontSize: "clamp(26px, 3vw, 34px)",
+              fontWeight: 500,
+              letterSpacing: "-0.03em",
+              color: "#000",
+              margin: "0 0 8px",
+            }}
+          >
+            Create your account
+          </h1>
+          <p style={{ ...pageStyles.body, marginBottom: "32px" }}>
+            Join hundreds of Chicagoland customers managing their HVAC online.
+          </p>
 
-        <>
-            <p style={{ ...pageStyles.eyebrow, marginBottom: "10px" }}>Get started</p>
-            <h1
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", gap: "13px" }}
+          >
+            <InputField icon={User} name="name" placeholder="Full Name" value={form.name} onChange={handleChange("name")} />
+            <InputField icon={Mail} type="email" name="email" placeholder="Email Address" value={form.email} onChange={handleChange("email")} />
+            <InputField icon={Phone} type="tel" name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange("phone")} />
+            <PasswordField name="password" placeholder="Password" value={form.password} onChange={handleChange("password")} />
+            <PasswordField name="confirm" placeholder="Confirm Password" value={form.confirm} onChange={handleChange("confirm")} />
+
+            <p style={{ fontSize: "12px", color: "#3F3F46", lineHeight: 1.55, margin: "2px 0 4px" }}>
+              By creating an account you agree to our Terms of Service and Privacy Policy.
+            </p>
+
+            <button
+              type="submit"
+              disabled={loading}
               style={{
-                fontSize: "clamp(26px, 3vw, 34px)",
+                background: "#000",
+                color: "#fff",
+                border: "none",
+                borderRadius: "12px",
+                padding: "15px",
+                fontSize: "16px",
                 fontWeight: 500,
-                letterSpacing: "-0.03em",
+                cursor: loading ? "not-allowed" : "pointer",
+                fontFamily: "'TT Norms Pro', sans-serif",
+                transition: "background 0.2s, opacity 0.2s",
+                opacity: loading ? 0.65 : 1,
+                letterSpacing: "-0.01em",
+              }}
+              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#333"; }}
+              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = "#000"; }}
+            >
+              {loading ? "Creating Account…" : "Create Account"}
+            </button>
+
+            {/* Error message */}
+            {error && (
+              <p style={{ color: "#c0392b", fontSize: "14px", textAlign: "center", margin: "4px 0 0", background: "rgba(192,57,43,0.07)", borderRadius: "8px", padding: "10px 14px" }}>
+                {error}
+              </p>
+            )}
+          </form>
+
+          <p style={{ ...pageStyles.body, textAlign: "center", marginTop: "28px" }}>
+            Already have an account?{" "}
+            <Link
+              to="/signin"
+              style={{
                 color: "#000",
-                margin: "0 0 8px",
+                fontWeight: 600,
+                textDecoration: "none",
+                borderBottom: "1.5px solid #000",
+                paddingBottom: "1px",
               }}
             >
-              Create your account
-            </h1>
-            <p style={{ ...pageStyles.body, marginBottom: "32px" }}>
-              Join hundreds of Chicagoland customers managing their HVAC online.
-            </p>
-
-            <form
-              onSubmit={handleSubmit}
-              style={{ display: "flex", flexDirection: "column", gap: "13px" }}
-            >
-              <InputField icon={User} name="name" placeholder="Full Name" value={form.name} onChange={handleChange("name")} />
-              <InputField icon={Mail} type="email" name="email" placeholder="Email Address" value={form.email} onChange={handleChange("email")} />
-              <InputField icon={Phone} type="tel" name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange("phone")} />
-              <PasswordField name="password" placeholder="Password" value={form.password} onChange={handleChange("password")} />
-              <PasswordField name="confirm" placeholder="Confirm Password" value={form.confirm} onChange={handleChange("confirm")} />
-
-              <p style={{ fontSize: "12px", color: "#3F3F46", lineHeight: 1.55, margin: "2px 0 4px" }}>
-                By creating an account you agree to our Terms of Service and Privacy Policy.
-              </p>
-
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  background: "#000",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  fontSize: "16px",
-                  fontWeight: 500,
-                  cursor: loading ? "not-allowed" : "pointer",
-                  fontFamily: "'TT Norms Pro', sans-serif",
-                  transition: "background 0.2s, opacity 0.2s",
-                  opacity: loading ? 0.65 : 1,
-                  letterSpacing: "-0.01em",
-                }}
-                onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#333"; }}
-                onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = "#000"; }}
-              >
-                {loading ? "Creating Account…" : "Create Account"}
-              </button>
-
-              {/* Error message */}
-              {error && (
-                <p style={{ color: "#c0392b", fontSize: "14px", textAlign: "center", margin: "4px 0 0", background: "rgba(192,57,43,0.07)", borderRadius: "8px", padding: "10px 14px" }}>
-                  {error}
-                </p>
-              )}
-            </form>
-
-            <p style={{ ...pageStyles.body, textAlign: "center", marginTop: "28px" }}>
-              Already have an account?{" "}
-              <Link
-                to="/signin"
-                style={{
-                  color: "#000",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                  borderBottom: "1.5px solid #000",
-                  paddingBottom: "1px",
-                }}
-              >
-                Sign In
-              </Link>
-            </p>
-          </>
-
-        <div style={{ textAlign: "center", marginTop: "40px" }}>
-          <Link
-            to="/"
-            style={{ fontSize: "13px", color: "rgba(0,0,0,0.4)", textDecoration: "none", transition: "color 0.2s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#000")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0,0,0,0.4)")}
-          >
-            ← Back to AAA Heating &amp; Air
-          </Link>
+              Sign In
+            </Link>
+          </p>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
