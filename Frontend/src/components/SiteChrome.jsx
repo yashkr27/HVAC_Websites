@@ -153,8 +153,8 @@ export function PageHero({ title, subtitle, image = hvacImages.service }) {
   return (
     <div
       style={{
-        minHeight: "520px",
-        padding: "112px clamp(16px, 3vw, 40px) 24px",
+        minHeight: "420px",
+        padding: "88px clamp(16px, 3vw, 40px) 20px",
         display: "flex",
         alignItems: "stretch",
         position: "relative",
@@ -166,7 +166,7 @@ export function PageHero({ title, subtitle, image = hvacImages.service }) {
           width: "100%",
           borderRadius: "22px",
           overflow: "hidden",
-          minHeight: "440px",
+          minHeight: "360px",
         }}
       >
         <img
@@ -195,7 +195,7 @@ export function PageHero({ title, subtitle, image = hvacImages.service }) {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            minHeight: "440px",
+            minHeight: "360px",
             padding: "clamp(32px, 5vw, 72px)",
             textAlign: "left",
           }}
@@ -239,7 +239,7 @@ export function PageShell({ children }) {
         * { box-sizing: border-box; }
         @media (max-width: 720px) {
           .page-hero-content { padding: 32px 24px !important; }
-          .responsive-section { padding: 64px 20px !important; }
+          .responsive-section { padding: 48px 20px !important; }
           .contact-layout { grid-template-columns: 1fr !important; }
         }
         p, li, span { text-rendering: optimizeLegibility; }
@@ -253,7 +253,7 @@ export function PageShell({ children }) {
 
 export function CTASection({ title, subtitle, buttonText, href = "/contact" }) {
   return (
-    <section className="responsive-section" style={{ padding: "0 clamp(20px, 4vw, 64px) 96px" }}>
+    <section className="responsive-section" style={{ padding: "0 clamp(20px, 4vw, 64px) 64px" }}>
       <div
         style={{
           ...pageStyles.container,
