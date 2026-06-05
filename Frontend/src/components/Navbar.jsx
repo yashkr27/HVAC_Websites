@@ -209,7 +209,7 @@ export function Navbar() {
             grid-template-columns: auto 1fr auto !important;
             column-gap: 14px !important;
           }
-          .site-nav-container.is-home .site-brand-wrapper {
+          .site-brand-wrapper {
             display: none !important;
           }
           .site-nav-container.is-home .site-logo-img {
