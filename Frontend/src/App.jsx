@@ -584,6 +584,166 @@ function BackedBySection() {
   );
 }
 
+// ─── Emergency Section ────────────────────────────────────────────────────────
+function EmergencySection() {
+  return (
+    <section
+      className="emergency-section"
+      style={{
+        background: "linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%)",
+        padding: "64px clamp(20px, 4vw, 64px)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <style>{`
+        @keyframes pulse-ring {
+          0% { transform: scale(1); opacity: 0.8; }
+          70% { transform: scale(1.6); opacity: 0; }
+          100% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes blink-dot {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+        .emergency-pulse-dot {
+          width: 10px; height: 10px; border-radius: 50%;
+          background: #ef4444; position: relative; flex-shrink: 0;
+          animation: blink-dot 1.4s ease-in-out infinite;
+        }
+        .emergency-pulse-dot::before {
+          content: ''; position: absolute; inset: -4px;
+          border-radius: 50%; border: 2px solid #ef4444;
+          animation: pulse-ring 1.4s ease-out infinite;
+        }
+        .emergency-grid {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 48px;
+          align-items: center;
+          max-width: min(96rem, calc(100vw - 48px));
+          margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+          .emergency-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .emergency-features { flex-wrap: wrap; gap: 16px !important; }
+        }
+        .emergency-call-btn {
+          display: inline-flex; align-items: center; gap: 12px;
+          background: #ef4444; color: #fff;
+          font-size: clamp(15px, 1.2vw, 18px); font-weight: 700;
+          padding: 14px 28px; border-radius: 9999px; border: none;
+          cursor: pointer; text-decoration: none; white-space: nowrap;
+          font-family: 'TT Norms Pro', sans-serif; letter-spacing: -0.01em;
+          transition: background 0.2s, transform 0.15s;
+          box-shadow: 0 0 32px rgba(239,68,68,0.4);
+        }
+        .emergency-call-btn:hover {
+          background: #dc2626; transform: translateY(-2px);
+          box-shadow: 0 0 48px rgba(239,68,68,0.6);
+        }
+        .emergency-chat-btn {
+          display: inline-flex; align-items: center; gap: 10px;
+          background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85);
+          font-size: 15px; font-weight: 600;
+          padding: 14px 28px; border-radius: 9999px;
+          border: 1px solid rgba(255,255,255,0.15);
+          cursor: pointer; text-decoration: none; white-space: nowrap;
+          font-family: 'TT Norms Pro', sans-serif;
+          transition: background 0.2s, border-color 0.2s;
+          backdrop-filter: blur(8px);
+        }
+        .emergency-chat-btn:hover {
+          background: rgba(255,255,255,0.14);
+          border-color: rgba(255,255,255,0.3);
+        }
+      `}</style>
+
+      {/* Subtle grid overlay */}
+      <div style={{
+        position: "absolute", inset: 0, opacity: 0.04,
+        backgroundImage: "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+        backgroundSize: "48px 48px", pointerEvents: "none",
+      }} />
+
+      <div className="emergency-grid">
+        {/* Left */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+            <div className="emergency-pulse-dot" />
+            <span style={{ color: "#ef4444", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+              24 / 7 Emergency Line — Always Available
+            </span>
+          </div>
+
+          <h2 style={{
+            color: "#fff", fontSize: "clamp(32px, 4vw, 52px)",
+            fontWeight: 500, lineHeight: 1.1, margin: "0 0 16px",
+            letterSpacing: "-0.04em", fontFamily: "'TT Norms Pro', sans-serif",
+          }}>
+            HVAC Emergency?<br />
+            <span style={{ color: "#ef4444" }}>We'll Be There.</span>
+          </h2>
+
+          <p style={{
+            color: "rgba(255,255,255,0.65)", fontSize: "clamp(15px, 1.4vw, 17px)",
+            lineHeight: 1.6, maxWidth: "36rem", margin: "0 0 32px",
+          }}>
+            No heat in winter. No AC in summer. System failures don't wait — and neither do we.
+            Our certified technicians are dispatched same-day, any hour, 365 days a year.
+          </p>
+
+          <div className="emergency-features" style={{ display: "flex", gap: "24px", flexWrap: "wrap", marginBottom: "36px" }}>
+            {[["⚡", "Same-Day Dispatch"], ["🛡️", "Licensed & Insured"], ["🔧", "All Makes & Models"], ["💳", "Financing Available"]].map(([icon, label]) => (
+              <div key={label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "16px" }}>{icon}</span>
+                <span style={{ color: "rgba(255,255,255,0.72)", fontSize: "14px", fontWeight: 500 }}>{label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: "flex", gap: "14px", flexWrap: "wrap", alignItems: "center" }}>
+            <a href="tel:17085550198" className="emergency-call-btn">
+              📞 Call Now — (708) 555-0198
+            </a>
+            <button
+              className="emergency-chat-btn"
+              onClick={() => {
+                const launcher = document.querySelector(".hvac-chat-launcher");
+                if (launcher) { launcher.click(); }
+                setTimeout(() => {
+                  const trigger = document.querySelector(".hvac-emergency-trigger");
+                  if (trigger) trigger.click();
+                }, 450);
+              }}
+            >
+              💬 Start Emergency Chat
+            </button>
+          </div>
+        </div>
+
+        {/* Right — Stats */}
+        <div style={{
+          background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "20px", padding: "36px 32px", backdropFilter: "blur(12px)",
+          position: "relative", zIndex: 1, minWidth: "220px",
+        }}>
+          {[["< 2 hrs", "Average Response Time"], ["24 / 7", "Days Per Year"], ["500+", "Emergencies Resolved"], ["4.9 ★", "Emergency Rating"]].map(([val, label], i, arr) => (
+            <div key={label} style={{
+              paddingBottom: i < arr.length - 1 ? "24px" : 0,
+              marginBottom: i < arr.length - 1 ? "24px" : 0,
+              borderBottom: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
+            }}>
+              <p style={{ color: "#fff", fontSize: "clamp(22px, 2.2vw, 30px)", fontWeight: 500, margin: "0 0 4px", letterSpacing: "-0.03em", fontFamily: "'TT Norms Pro', sans-serif" }}>{val}</p>
+              <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "13px", margin: 0 }}>{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─── Use Cases Section ────────────────────────────────────────────────────────
 function UseCasesSection() {
   return (
@@ -805,6 +965,7 @@ function HomePage() {
       {/* Below-fold sections */}
       <InfoSection />
       <BackedBySection />
+      <EmergencySection />
       <UseCasesSection />
       <Footer />
     </div>
